@@ -27,19 +27,15 @@ Entity as a funny game aims exact and firm to be self-explanatory! :)
 
 # Getting Started
 1.	Installation process:
-<br>
 Currently hanging around somewhere within compile and creation! :)
 
 2.	Software dependencies:
-<br>
 Dependent on Qt/QML API's
 
 3.	Latest releases:
-<br>
 Still no release, just coding and debugging
 
-4.	API references
-<br>
+4.	API references:
 Online Qt Reference
 
 # Build and Test

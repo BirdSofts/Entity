@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>entity.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>qml/start.qml</file>
+        <file>qml/settings.qml</file>
+        <file>qml/ColourModel.qml</file>
+    </qresource>
+</RCC>
