@@ -3,14 +3,14 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,04.10.2019</changed>
+/// <changed>ʆϒʅ,06.10.2019</changed>
 // *******************************************************************************************
 
 
 #include "gTestsClass.h"
 
 
-TEST ( QtApp, Test_FailCase )
+TEST ( Entity, Test_FailCase )
 {
   EXPECT_EQ ( 1, 2 );
   EXPECT_TRUE ( false );

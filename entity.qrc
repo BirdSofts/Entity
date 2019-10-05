@@ -2,8 +2,9 @@
     <qresource prefix="/">
         <file>entity.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>qml/start.qml</file>
-        <file>qml/settings.qml</file>
+        <file>qml/Configs.qml</file>
         <file>qml/ColourModel.qml</file>
+        <file>qml/First.qml</file>
+        <file>qml/Game.qml</file>
     </qresource>
 </RCC>

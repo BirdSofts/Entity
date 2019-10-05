@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,04.10.2019</changed>
+/// <changed>ʆϒʅ,06.10.2019</changed>
 // *******************************************************************************************
 
 
@@ -14,10 +14,11 @@
 #include <qqmlfileselector.h>
 #include <qqmlcontext.h>
 
+#include "../libLogic/logic.h"
 #include "../libSettings/settings.h"
 
 
-TEST ( QtApp, Application_RunInWhole )
+TEST ( Entity, Application_RunInWhole )
 {
 
   QCoreApplication::setAttribute ( Qt::AA_EnableHighDpiScaling );
@@ -53,8 +54,11 @@ TEST ( QtApp, Application_RunInWhole )
   view.connect ( view.engine (), &QQmlEngine::quit, &app, &QCoreApplication::quit );
   new QQmlFileSelector ( view.engine (), &view );
 
+  GameLogic logic;
+  view.rootContext ()->setContextProperty ( "logic", &logic );
+
   Configuration configs;
-  view.rootContext ()->setContextProperty ( "configuration", &configs );
+  view.rootContext ()->setContextProperty ( "configs", &configs );
 
   view.setSource ( url );
 
@@ -62,23 +66,26 @@ TEST ( QtApp, Application_RunInWhole )
   if (view.status () == QQuickView::Error)
     viewError = true;
 
-  view.setResizeMode ( QQuickView::SizeRootObjectToView );
+  if (!viewError)
+  {
+    view.setResizeMode ( QQuickView::SizeRootObjectToView );
 
-  view.show ();
+    view.show ();
 
-  app.exec ();
+    app.exec ();
+  }
 
   EXPECT_FALSE ( viewError );
 
 }
 
-TEST ( QtApp, libSettings_Instantiation )
+TEST ( Entity, libSettings_Instantiation )
 {
   Configuration configs;
   EXPECT_TRUE ( configs.getLoaded () );
 }
 
-TEST ( QtApp, Test_SuccessCase )
+TEST ( Entity, Test_SuccessCase )
 {
   EXPECT_EQ ( 1, 1 );
   EXPECT_TRUE ( !false );

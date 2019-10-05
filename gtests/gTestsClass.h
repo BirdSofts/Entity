@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,04.10.2019</changed>
+/// <changed>ʆϒʅ,06.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef GTESTSCLASS_H
@@ -14,7 +14,7 @@
 #include "../libSettings/settings.h"
 
 
-class QtAppTest : public testing::Test
+class EntityTest : public testing::Test
 {
 
 

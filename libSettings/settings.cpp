@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,04.10.2019</changed>
+/// <changed>ʆϒʅ,06.10.2019</changed>
 // *******************************************************************************************
 
 
@@ -14,6 +14,8 @@ Configuration::Configuration () :
   loaded ( false ), saved ( false )
 {
 
+  current.width = 320;
+  current.height = 480;
   current.fontSize = 0;
   current.fontName = "";
   current.filePath = "";
@@ -25,7 +27,7 @@ Configuration::Configuration () :
 };
 
 
-//AppStyle::~AppStyle ( void )
+//Configuration::~Configuration ( void )
 //{
 //
 //};
@@ -179,6 +181,18 @@ void Configuration::set ( int fontSize, QString fontName, QString filePath, QStr
 const bool Configuration::getLoaded ( void )
 {
   return loaded;
+};
+
+
+unsigned short const Configuration::getWidth ( void )
+{
+  return current.width;
+};
+
+
+unsigned short const Configuration::getHeight ( void )
+{
+  return current.height;
 };
 
 

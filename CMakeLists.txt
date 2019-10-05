@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,04.10.2019</changed>
+#/ <changed>ʆϒʅ,05.10.2019</changed>
 # *******************************************************************************************
 
 
@@ -55,6 +55,7 @@ find_package(Qt5 COMPONENTS
   QuickControls2
   REQUIRED)
 
+add_subdirectory(libLogic)
 add_subdirectory(libSettings)
 
 if(MSVC)
@@ -100,6 +101,7 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC Qt5::Qml
   PUBLIC Qt5::Quick
   PUBLIC Qt5::QuickControls2
+  PUBLIC libLogic
   PUBLIC libSettings
   )
 

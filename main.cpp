@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,04.10.2019</changed>
+/// <changed>ʆϒʅ,05.10.2019</changed>
 // *******************************************************************************************
 
 
@@ -13,6 +13,7 @@
 #include <qqmlfileselector.h>
 #include <qqmlcontext.h>
 
+#include "./libLogic/logic.h"
 #include "./libSettings/settings.h"
 
 
@@ -48,8 +49,11 @@ int main ( int argc, char* argv [] )
   view.connect ( view.engine (), &QQmlEngine::quit, &app, &QCoreApplication::quit );
   new QQmlFileSelector ( view.engine (), &view );
 
+  GameLogic logic;
+  view.rootContext ()->setContextProperty ( "logic", &logic );
+
   Configuration configs;
-  view.rootContext ()->setContextProperty ( "configuration", &configs );
+  view.rootContext ()->setContextProperty ( "configs", &configs );
 
   view.setSource ( url );
 
