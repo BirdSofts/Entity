@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,05.10.2019</changed>
+#/ <changed>ʆϒʅ,13.10.2019</changed>
 # *******************************************************************************************
 
 
@@ -17,6 +17,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+#https://vcpkg.readthedocs.io/en/latest/users/integration/
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+endif()
+#CMake configuration: CMAKE_TOOLCHAIN_FILE:INTERNAL=C:/src/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 set(TARGET_NAME entity)
 
@@ -37,15 +43,6 @@ if(MSVC)
 endif(MSVC)
 
 enable_testing()
-
-if(NOT CMAKE_MODULE_PATH)
-  if(MSVC)
-    set(QT_BINARIES "C:/Qt/5.13.1/msvc2017_64/bin")
-    set(Qt5_DIR "C:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5")
-  else(MSVC)
-    set(QT_BINARIES "C:/Qt/5.13.1/mingw73_64/bin")
-  endif(MSVC)
-endif()
 
 find_package(Qt5 COMPONENTS
   Core
@@ -127,53 +124,6 @@ add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
   ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
   $<TARGET_FILE_DIR:${TARGET_NAME}>/gtests
   )
-
-if(MSVC)
-  add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-    COMMAND cmake -E copy_if_different
-    ${QT_BINARIES}/Qt5Core.dll
-    ${QT_BINARIES}/Qt5Cored.dll
-    ${QT_BINARIES}/Qt5Gui.dll
-    ${QT_BINARIES}/Qt5Guid.dll
-    ${QT_BINARIES}/Qt5Network.dll
-    ${QT_BINARIES}/Qt5Networkd.dll
-    ${QT_BINARIES}/Qt5Qml.dll
-    ${QT_BINARIES}/Qt5Qmld.dll
-    ${QT_BINARIES}/Qt5Quick.dll
-    ${QT_BINARIES}/Qt5Quickd.dll
-    ${QT_BINARIES}/Qt5QuickControls2.dll
-    ${QT_BINARIES}/Qt5QuickControls2d.dll
-    ${QT_BINARIES}/Qt5QuickTemplates2.dll
-    ${QT_BINARIES}/Qt5QuickTemplates2d.dll
-    ${QT_BINARIES}/Qt5QuickWidgets.dll
-    ${QT_BINARIES}/Qt5QuickWidgetsd.dll
-    ${QT_BINARIES}/Qt5Widgets.dll
-    ${QT_BINARIES}/Qt5Widgetsd.dll
-    $<TARGET_FILE_DIR:${TARGET_NAME}>
-    )
-    add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-    COMMAND cmake -E copy_if_different
-    ${QT_BINARIES}/Qt5Core.dll
-    ${QT_BINARIES}/Qt5Cored.dll
-    ${QT_BINARIES}/Qt5Gui.dll
-    ${QT_BINARIES}/Qt5Guid.dll
-    ${QT_BINARIES}/Qt5Network.dll
-    ${QT_BINARIES}/Qt5Networkd.dll
-    ${QT_BINARIES}/Qt5Qml.dll
-    ${QT_BINARIES}/Qt5Qmld.dll
-    ${QT_BINARIES}/Qt5Quick.dll
-    ${QT_BINARIES}/Qt5Quickd.dll
-    ${QT_BINARIES}/Qt5QuickControls2.dll
-    ${QT_BINARIES}/Qt5QuickControls2d.dll
-    ${QT_BINARIES}/Qt5QuickTemplates2.dll
-    ${QT_BINARIES}/Qt5QuickTemplates2d.dll
-    ${QT_BINARIES}/Qt5QuickWidgets.dll
-    ${QT_BINARIES}/Qt5QuickWidgetsd.dll
-    ${QT_BINARIES}/Qt5Widgets.dll
-    ${QT_BINARIES}/Qt5Widgetsd.dll
-    $<TARGET_FILE_DIR:${TARGET_NAME}>/gtests
-    )
-endif(MSVC)
 
 if(RELEASE_FLAG)
   if(MINGW)

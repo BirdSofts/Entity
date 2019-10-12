@@ -1,10 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>entity.qml</file>
+        <file>logic.js</file>
         <file>qtquickcontrols2.conf</file>
         <file>qml/Configs.qml</file>
         <file>qml/ColourModel.qml</file>
         <file>qml/First.qml</file>
+        <file>qml/Fragment.qml</file>
         <file>qml/Game.qml</file>
     </qresource>
 </RCC>

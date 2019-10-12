@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,04.10.2019</created>
-#/ <changed>ʆϒʅ,05.10.2019</changed>
+#/ <changed>ʆϒʅ,11.10.2019</changed>
 # *******************************************************************************************
 
 
@@ -21,11 +21,11 @@ project(${PROJECT_NAME}
   )
 
 list(APPEND HEADER_FILES
-  gTestsClass.h
+#  gTestsClass.h
   )
 list(APPEND SOURCE_FILES
-  main.cpp
-  gTestsClass.cpp
+#  main.cpp
+#  gTestsClass.cpp
   gTestsFeatures.cpp
   )
 if(WIN32)

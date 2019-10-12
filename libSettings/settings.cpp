@@ -1,9 +1,9 @@
 ﻿// *******************************************************************************************
 /// <summary>
-/// 
+///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,06.10.2019</changed>
+/// <changed>ʆϒʅ,13.10.2019</changed>
 // *******************************************************************************************
 
 
@@ -14,8 +14,8 @@ Configuration::Configuration () :
   loaded ( false ), saved ( false )
 {
 
-  current.width = 320;
-  current.height = 480;
+  current.width = 480;
+  current.height = 640;
   current.fontSize = 0;
   current.fontName = "";
   current.filePath = "";

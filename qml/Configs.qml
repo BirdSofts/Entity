@@ -1,9 +1,9 @@
 ﻿// *******************************************************************************************
 /// <summary>
-/// 
+///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,06.10.2019</changed>
+/// <changed>ʆϒʅ,13.10.2019</changed>
 // *******************************************************************************************
 
 
@@ -287,8 +287,7 @@ Item {
           id: settingsExit
           //    background: Rectangle {}
           text: qsTr("Return")
-          anchors.horizontalCenter: parent.horizontalCenter
-          anchors.verticalCenter: parent.verticalCenter
+          Layout.fillWidth: true
           font.pixelSize: 20
           contentItem: Text { // adjustments to button text
             text: parent.text

@@ -3,28 +3,33 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,06.10.2019</changed>
+/// <changed>ʆϒʅ,13.10.2019</changed>
 // *******************************************************************************************
 
 
 import QtQuick 2.13
 //import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
+import "../logic.js" as LogicJs
 
 // page base container
 Item {
-  id: pageStart
+  id: gameCanvas
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
 
+  property int health: 0
+  property int itemSize: 10
+
   Text {
     id: smilyText
-    text: qsTr( "Entity" )
+    text: qsTr("Entity")
     color: "darkBlue"
     y: parent.y + 10
     anchors.horizontalCenter: parent.horizontalCenter
-    font.pointSize: 12; font.bold: true
+    font.pointSize: 12
+    font.bold: true
 
     // text pair animations
     PropertyAnimation on font.letterSpacing {
@@ -47,7 +52,7 @@ Item {
   DropArea {
     width: parent.width
     height: 150
-    anchors.bottom: parent.bottom;
+    anchors.bottom: parent.bottom
 
     Rectangle {
       anchors.fill: parent
@@ -80,31 +85,31 @@ Item {
 
     // the actual draw process
     onPaint: {
-      var context = smily.getContext("2d");
+      var context = smily.getContext("2d")
       //        context.save();
-      context.clearRect(0, 0, smily.width, smily.height);
+      context.clearRect(0, 0, smily.width, smily.height)
 
-      context.lineWidth = 2;
+      context.lineWidth = 2
       context.fillStyle = fillStyle
       context.strokeStyle = strokeStyle
 
-      context.beginPath();
-      context.arc(50, 50, 50, -Math.PI, Math.PI*3, true); // face
+      context.beginPath()
+      context.arc(50, 50, 50, -Math.PI, Math.PI * 3, true) // face
 
-      context.moveTo(40,40);
-      context.arc(35, 40, 5, 0, Math.PI*2, true); // left eye
+      context.moveTo(40, 40)
+      context.arc(35, 40, 5, 0, Math.PI * 2, true) // left eye
 
-      context.moveTo(70,40);
-      context.arc(65, 40, 5, 0, Math.PI*2, true); // right eye
+      context.moveTo(70, 40)
+      context.arc(65, 40, 5, 0, Math.PI * 2, true) // right eye
 
       // mouth
-      context.moveTo(45,70);
-      context.lineTo(55,70);
+      context.moveTo(45, 70)
+      context.lineTo(55, 70)
 
-      context.closePath();
-      context.fill();
-      context.stroke();
-      context.restore();
+      context.closePath()
+      context.fill()
+      context.stroke()
+      context.restore()
     }
 
     // dragable
@@ -113,6 +118,7 @@ Item {
       anchors.fill: parent
       drag.target: parent
       onPressedChanged: smily.caller()
+      onClicked: LogicJs.newGame();
     }
 
     // smily pair animations
@@ -133,30 +139,25 @@ Item {
 
     // caller + delay function (radious approach)
     function delay() {
-      if (radious != 20)
-      {
-        var time = new Date().getTime();
-        for(var i = radious; i >= 20; i-=0.01)
-        {
-          for(var j = 0; i < 100000; i++)
-            if((new Date().getTime() - time) > 10)
-              break;
-          radious = i;
-          requestPaint();
+      if (radious != 20) {
+        var time = new Date().getTime()
+        for (var i = radious; i >= 20; i -= 0.01) {
+          for (var j = 0; i < 100000; i++)
+            if ((new Date().getTime() - time) > 10)
+              break
+          radious = i
+          requestPaint()
         }
       }
     }
 
     // animation caller function
     function caller() {
-      if (currentScale === 1.0)
-      {
-        enterAnimation.start();
+      if (currentScale === 1.0) {
+        enterAnimation.start()
         currentScale = 0.5
-      }
-      else
-      {
-        exitAnimation.start();
+      } else {
+        exitAnimation.start()
         currentScale = 1.0
       }
     }
@@ -167,17 +168,16 @@ Item {
     //      onYChanged: {
     //        console.log("Y changed:", y)
     //      }
-
-
   }
 
   Button {
     id: gameExit
-//    background: Rectangle {}
+    //    background: Rectangle {}
     text: qsTr("Exit")
     anchors.bottom: parent.bottom
     font.pixelSize: 20
-    contentItem: Text { // adjustments to button text
+    contentItem: Text {
+      // adjustments to button text
       text: parent.text
       font: parent.font
       //            opacity: enabled ? 1.0 : 0.3
@@ -188,8 +188,6 @@ Item {
       elide: Text.ElideRight // omit characters from right (dynamic resizing)
     }
     padding: 10
-          onClicked: gameStarted = false
-
+    onClicked: gameStarted = false
   }
-
 }
