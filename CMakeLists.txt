@@ -3,9 +3,8 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,13.10.2019</changed>
+#/ <changed>ʆϒʅ,16.10.2019</changed>
 # *******************************************************************************************
-
 
 cmake_minimum_required(VERSION 3.5)
 
@@ -17,12 +16,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
-#https://vcpkg.readthedocs.io/en/latest/users/integration/
-if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-endif()
-#CMake configuration: CMAKE_TOOLCHAIN_FILE:INTERNAL=C:/src/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 set(TARGET_NAME entity)
 

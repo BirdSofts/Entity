@@ -3,13 +3,13 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,06.10.2019</changed>
+/// <changed>ʆϒʅ,16.10.2019</changed>
 // *******************************************************************************************
-
 
 import QtQuick 2.13
 import QtQuick.Controls 2.5
 //import QtQuick.Layouts 1.3
+
 
 // page base container
 Item {

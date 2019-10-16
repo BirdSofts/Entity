@@ -3,14 +3,14 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,13.10.2019</changed>
+/// <changed>ʆϒʅ,16.10.2019</changed>
 // *******************************************************************************************
-
 
 import QtQuick 2.13
 //import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import "../logic.js" as LogicJs
+
 
 // page base container
 Item {

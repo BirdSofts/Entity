@@ -3,14 +3,14 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,13.10.2019</changed>
+/// <changed>ʆϒʅ,16.10.2019</changed>
 // *******************************************************************************************
-
 
 import QtQuick 2.13
 //import QtQuick.Window 2.13 // QML window component
 import QtQuick.Controls 2.13
 import "qml"
+
 
 Item {
   id: view
