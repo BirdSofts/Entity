@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,19.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -48,7 +48,7 @@ Item {
     }
   }
 
-  // drop aread at the bottom of page
+  // drop area at the bottom of page
   DropArea {
     width: parent.width
     height: 150
@@ -75,8 +75,8 @@ Item {
     // smily scale
     property real currentScale: 1.0
 
-    //      property int radious: 50
-    //      Component.onCompleted: radious = 20
+    //      property int radius: 50
+    //      Component.onCompleted: radius = 20
     //      onRadiousChanged: { requestPaint() }
 
     // drawing properties of smily
@@ -112,13 +112,21 @@ Item {
       context.restore()
     }
 
-    // dragable
+    // game's timer
+    Timer {
+      interval: 1
+      running: true
+      repeat: true
+      onTriggered: LogicJs.tick()
+    }
+
+    // draggable
     MouseArea {
       id: smilyDragArea
       anchors.fill: parent
       drag.target: parent
       onPressedChanged: smily.caller()
-      onClicked: LogicJs.newGame();
+      onReleased: LogicJs.endGame()
     }
 
     // smily pair animations
@@ -137,15 +145,15 @@ Item {
       running: false
     }
 
-    // caller + delay function (radious approach)
+    // caller + delay function (radius approach)
     function delay() {
-      if (radious != 20) {
+      if (radius != 20) {
         var time = new Date().getTime()
-        for (var i = radious; i >= 20; i -= 0.01) {
+        for (var i = radius; i >= 20; i -= 0.01) {
           for (var j = 0; i < 100000; i++)
             if ((new Date().getTime() - time) > 10)
               break
-          radious = i
+          radius = i
           requestPaint()
         }
       }
@@ -156,6 +164,7 @@ Item {
       if (currentScale === 1.0) {
         enterAnimation.start()
         currentScale = 0.5
+        LogicJs.newGame()
       } else {
         exitAnimation.start()
         currentScale = 1.0
@@ -190,4 +199,5 @@ Item {
     padding: 10
     onClicked: gameStarted = false
   }
+
 }

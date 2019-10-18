@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,17.10.2019</changed>
 // *******************************************************************************************
 
 #include "../libSettings/settings.h"
@@ -13,8 +13,8 @@ Configuration::Configuration () :
   loaded ( false ), saved ( false )
 {
 
-  current.width = 480;
-  current.height = 640;
+  current.width = 600;
+  current.height = 800;
   current.fontSize = 0;
   current.fontName = "";
   current.filePath = "";

@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,17.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -29,7 +29,7 @@ Item {
     y: -(height - height)
 
     Row {
-      //      visible: false // first aproach (without slide ability)
+      //      visible: false // first approach (without slide ability)
       First {}
     }
     Row {

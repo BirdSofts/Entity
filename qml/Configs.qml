@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,19.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -136,7 +136,7 @@ Item {
                   fontPopup.close()
                 }
               }
-              // popup scroll functionallity
+              // popup scroll functionality
               ScrollIndicator.vertical: ScrollIndicator {}
             }
             onOpened: indicator.running = true

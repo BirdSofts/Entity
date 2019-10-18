@@ -3,9 +3,8 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,04.10.2019</changed>
+/// <changed>ʆϒʅ,16.10.2019</changed>
 // *******************************************************************************************
-
 
 #include <gtest/gtest.h>
 #include "../libSettings/settings.h"
