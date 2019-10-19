@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,19.10.2019</changed>
 // *******************************************************************************************
 
 
@@ -15,21 +15,36 @@
 #include <exception>
 #include <fstream>
 #include <sstream>
-#include <qobject.h>
-#include <qstring.h>
+#include <qquickitem.h>
+#include <qquickview.h>
+
+// need to be provided through a smart pointer but for the time being:
+#include "..\libSettings\settings.h"
 
 
-class GameLogic : public QObject
+class GameLogic : public QQuickItem
 {
   Q_OBJECT
 private:
+  QQuickView* view;
+
+  Configuration* configs;
+
+  unsigned short screenWidth;
+  unsigned short screenHeight;
+
+  unsigned short health;
+  QQuickItem* items;
+  QQuickItem* object;
+
   bool state;
 public:
 
-  GameLogic ();
+  GameLogic ( Configuration*, QQuickView* );
   //~GameLogic ( void );
-  Q_INVOKABLE void newGame ( void ); // start a new game
   Q_INVOKABLE bool const getState ( void ); // get game state
+  Q_INVOKABLE void newGame (); // start a new game
+  Q_INVOKABLE void endGame (); // end the game
 };
 
 

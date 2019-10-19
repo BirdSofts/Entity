@@ -25,11 +25,11 @@ Item {
     id: content
     anchors.fill: parent
     color: {
-      if (type === 0)
+      if (type === 1)
         return "red"
-      else if (type == 1)
+      else if (type === 2)
         return "green"
-      else
+      else if (type === 3)
         return "blue"
     }
   }

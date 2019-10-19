@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,19.10.2019</changed>
 // *******************************************************************************************
 
 #include <qguiapplication.h>
@@ -48,11 +48,11 @@ int main ( int argc, char* argv [] )
   view.connect ( view.engine (), &QQmlEngine::quit, &app, &QCoreApplication::quit );
   new QQmlFileSelector ( view.engine (), &view );
 
-  GameLogic logic;
-  view.rootContext ()->setContextProperty ( "logic", &logic );
-
   Configuration configs;
   view.rootContext ()->setContextProperty ( "configs", &configs );
+
+  GameLogic logic ( &configs, &view );
+  view.rootContext ()->setContextProperty ( "logic", &logic );
 
   view.setSource ( url );
 

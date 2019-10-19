@@ -15,6 +15,7 @@ import "../logic.js" as LogicJs
 // page base container
 Item {
   id: gameCanvas
+  objectName: "gameCanvas"
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
@@ -126,7 +127,7 @@ Item {
       anchors.fill: parent
       drag.target: parent
       onPressedChanged: smily.caller()
-      onReleased: LogicJs.endGame()
+      onReleased: { LogicJs.endGame(); logic.endGame() }
     }
 
     // smily pair animations
@@ -165,6 +166,7 @@ Item {
         enterAnimation.start()
         currentScale = 0.5
         LogicJs.newGame()
+        logic.newGame()
       } else {
         exitAnimation.start()
         currentScale = 1.0

@@ -35,7 +35,7 @@ function createItem(index)
       console.log(component.errorString());
       return false;
     }
-    dynamicObj.type = Math.floor(Math.random() * 3); // Note: for the time being
+    dynamicObj.type = Math.floor(Math.random() * 3) + 1; // Note: for the time being
 
     dynamicObj.objData = (Math.floor(Math.random() * 2) + 1) * 100;
 
