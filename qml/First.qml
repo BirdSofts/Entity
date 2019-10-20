@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -17,15 +17,19 @@ Item {
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
+  ThemeItem {}
+
+  property int fontSize: 0
 
   Button {
     id: gameStarter
-//    background: Rectangle {}
     text: qsTr("Start")
     anchors.verticalCenterOffset: -30
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
-    font.pixelSize: 20
+    font.family: configs.getFontName()
+    font.pixelSize: fontSize
+    background: ThemeButton {}
     contentItem: Text { // adjustments to button text
       text: parent.text
       font: parent.font
@@ -37,17 +41,18 @@ Item {
       elide: Text.ElideRight // omit characters from right (dynamic resizing)
     }
     padding: 10
-          onClicked: gameStarted = true
+    onClicked: gameStarted = true
 
   }
   Button {
     id: settingsShower
-//    background: Rectangle {}
+    background: ThemeButton {}
     text: qsTr("Settings")
     anchors.verticalCenterOffset: 30
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
-    font.pixelSize: 20
+    font.family: configs.getFontName()
+    font.pixelSize: fontSize
     contentItem: Text { // adjustments to button text
       text: parent.text
       font: parent.font
@@ -59,7 +64,7 @@ Item {
       elide: Text.ElideRight // omit characters from right (dynamic resizing)
     }
     padding: 10
-          onClicked: settingsShow = true
+    onClicked: settingsShow = true
 
   }
 

@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef SETTINGS_H
@@ -14,7 +14,8 @@
 #include <exception>
 #include <fstream>
 #include <sstream>
-#include <qobject.h>
+#include <qquickitem.h>
+#include <qquickview.h>
 #include <qstring.h>
 
 
@@ -34,6 +35,9 @@ class Configuration : public QObject
 {
   Q_OBJECT
 private:
+  QQuickView* view;
+  QObject* property;
+
   std::string path; // path to application XML settings file
 
   bool loaded; // true if loading was successful
@@ -42,7 +46,7 @@ private:
 public:
   Settings current; // current settings
 
-  Configuration ();
+  Configuration ( QQuickView* );
   //~Configuration ( void );
   Q_INVOKABLE void setDefaults ( void ); // defaults (if the settings file is corrupt)
   Q_INVOKABLE void set ( int, QString, QString, QString ); // set QML properties to settings file

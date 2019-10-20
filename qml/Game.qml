@@ -3,14 +3,14 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,19.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
 //import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
+import QtGraphicalEffects 1.0
 import "../logic.js" as LogicJs
-
 
 // page base container
 Item {
@@ -19,9 +19,12 @@ Item {
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
+  ThemeItem {}
 
   property int health: 0
   property int itemSize: 10
+
+  property int fontSize: 0
 
   Text {
     id: smilyText
@@ -118,7 +121,8 @@ Item {
       interval: 1
       running: true
       repeat: true
-      onTriggered: LogicJs.tick()
+      //onTriggered: LogicJs.tick()
+      onTriggered: logic.tick()
     }
 
     // draggable
@@ -127,7 +131,8 @@ Item {
       anchors.fill: parent
       drag.target: parent
       onPressedChanged: smily.caller()
-      onReleased: { LogicJs.endGame(); logic.endGame() }
+      //onReleased: { LogicJs.endGame(); logic.endGame() }
+      onReleased: logic.endGame()
     }
 
     // smily pair animations
@@ -165,7 +170,7 @@ Item {
       if (currentScale === 1.0) {
         enterAnimation.start()
         currentScale = 0.5
-        LogicJs.newGame()
+        //LogicJs.newGame()
         logic.newGame()
       } else {
         exitAnimation.start()
@@ -183,10 +188,11 @@ Item {
 
   Button {
     id: gameExit
-    //    background: Rectangle {}
+    background: ThemeButton {}
     text: qsTr("Exit")
     anchors.bottom: parent.bottom
-    font.pixelSize: 20
+    font.family: configs.getFontName()
+    font.pixelSize: fontSize
     contentItem: Text {
       // adjustments to button text
       text: parent.text

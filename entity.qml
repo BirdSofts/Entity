@@ -3,17 +3,18 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,17.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
 //import QtQuick.Window 2.13 // QML window component
 import QtQuick.Controls 2.13
-import "qml"
+import "./qml"
 
 
 Item {
   id: view
+  objectName: "view"
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
@@ -24,17 +25,23 @@ Item {
   property bool gameStarted: false
   property bool settingsShow: false
 
+  property int fontSize: configs.getFontSize()
+
   Column {
     x: -(width - width)
     y: -(height - height)
 
     Row {
       //      visible: false // first approach (without slide ability)
-      First {}
+      First {
+        fontSize: view.fontSize
+      }
     }
     Row {
       //      visible: false
-      Game {}
+      Game {
+        fontSize: view.fontSize
+      }
     }
   }
 
@@ -43,7 +50,9 @@ Item {
     y: -(height - height)
     Row {
       //      visible: false
-      Configs {}
+      Configs {
+        fontSize: view.fontSize
+      }
     }
   }
 
@@ -86,8 +95,8 @@ Item {
   transitions: Transition {
     NumberAnimation {
       properties: "x,y"
-      duration: 2000
-      easing.type: Easing.InBack
+      duration: 1000
+      easing.type: Easing.InOutCirc
     }
   }
 

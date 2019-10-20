@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,19.10.2019</changed>
+/// <changed>ʆϒʅ,21.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -19,8 +19,10 @@ Item {
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
+  ThemeItem {}
 
-  property int pFontSize: configs.getFontSize()
+  property int fontSize: 0
+
   property string pFontName: configs.getFontName()
   property string pFilePath: configs.getFilePath()
   property string pColour: configs.getColour()
@@ -40,6 +42,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalAlignment
         width: pageSettings.width - 20
         padding: 0
+        background: ThemeItem { opacity: 0.0 }
 
         // layout (container of font size controls)
         RowLayout {
@@ -48,7 +51,7 @@ Item {
           Label {
             id: fontSizeLabel
             text: qsTr("Font size: " + sliderFont.value)
-            font.pixelSize: 14
+            font.pixelSize: fontSize
             padding: 10
             Layout.fillWidth: true
             Layout.minimumWidth: 90
@@ -60,10 +63,10 @@ Item {
             snapMode: Slider.SnapAlways
             stepSize: 1
             to: 30
-            value: configs.getFontSize()
+            value: fontSize
             onMoved: {
               fontSizeLabel.text = qsTr("Font size: " + value)
-              pFontSize = value
+              fontSize = value
             }
             Layout.fillWidth: true
             Layout.minimumWidth: 150
@@ -78,10 +81,10 @@ Item {
         // font name button
         Button {
           id: fontType
-          background: Rectangle {}
+          background: ThemeButton {}
           Layout.fillWidth: true
           text: qsTr("Font: " + configs.getFontName())
-          font.pixelSize: 14
+          font.pixelSize: fontSize
           contentItem: Text { // adjustments to button text
             text: parent.text
             font: parent.font
@@ -98,6 +101,7 @@ Item {
           // font name popup (base container)
           Popup {
             id: fontPopup
+            background: ThemeItem { color: "white"; opacity: 0.8 }
             width: parent.width - 60
             height: parent.height - 60
             margins: 30
@@ -105,15 +109,20 @@ Item {
             bottomPadding: 40
             dim: true
             parent: Overlay.overlay
+            contentItem: Text {
+              color: "red"
+            }
 
             BusyIndicator {
               id: indicator
+              background: ThemeItem { opacity: 0.0 }
               anchors.right: parent.right
               anchors.rightMargin: 2
               anchors.top: parent.top
               anchors.topMargin: 2
-              scale: 2
+              scale: 1
               running: false
+              antialiasing: true
             }
 
             // font name popup list view
@@ -125,7 +134,7 @@ Item {
               height: parent.height
               delegate: ItemDelegate {
                 text: modelData
-                font.pixelSize: 14
+                font.pixelSize: fontSize
                 width: parent.width
                 highlighted: ListView.isCurrentItem
                 onClicked: {
@@ -153,10 +162,10 @@ Item {
         // file path button
         Button {
           id: path
-          background: Rectangle {}
+          background: ThemeButton {}
           Layout.fillWidth: true
           text: qsTr("Path: " + configs.getFilePath())
-          font.pixelSize: 14
+          font.pixelSize: fontSize
           contentItem: Text { // adjustments to button text
             text: parent.text
             font: parent.font
@@ -192,8 +201,9 @@ Item {
         // font size label
         Label {
           id: colourLable
+          background: ThemeItem { opacity: 0.0 }
           text: qsTr("Current Colour: " + configs.getColour())
-          font.pixelSize: 14
+          font.pixelSize: fontSize
           padding: 10
           Layout.fillWidth: true
         }
@@ -205,6 +215,7 @@ Item {
         // colour path view base container
         Rectangle {
           id: pathBase
+          ThemeItem {}
           Layout.fillWidth: true
           Layout.preferredWidth: 300
           Layout.minimumHeight: 200
@@ -213,7 +224,7 @@ Item {
             id: component
             Column {
               id: wrapper
-              opacity: PathView.isCurrentItem ? 1 : 0.4
+              opacity: PathView.isCurrentItem ? 1 : 0.6
               Rectangle {
                 id: colourIcon
                 anchors.horizontalCenter: nameText.horizontalCenter
@@ -224,7 +235,7 @@ Item {
               Text {
                 id: nameText
                 text: name
-                font.pixelSize: 14
+                font.pixelSize: fontSize
               }
             }
           }
@@ -263,9 +274,10 @@ Item {
       RowLayout {
         anchors.margins: 10
         anchors.horizontalCenter: parent.horizontalAlignment
-        Text {
+        Label {
+          background: ThemeItem { opacity: 0.0 }
           text: "Item 1"
-          font.pixelSize: 14
+          font.pixelSize: fontSize
         }
       }
 
@@ -273,9 +285,10 @@ Item {
       RowLayout {
         anchors.margins: 10
         anchors.horizontalCenter: parent.horizontalAlignment
-        Text {
+        Label {
+          background: ThemeItem { opacity: 0.0 }
           text: "Item 2"
-          font.pixelSize: 14
+          font.pixelSize: fontSize
         }
       }
 
@@ -285,10 +298,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalAlignment
         Button {
           id: settingsExit
-          //    background: Rectangle {}
+          background: ThemeButton {}
           text: qsTr("Return")
           Layout.fillWidth: true
-          font.pixelSize: 20
+          font.pixelSize: fontSize
           contentItem: Text { // adjustments to button text
             text: parent.text
             font: parent.font
@@ -302,7 +315,7 @@ Item {
           padding: 10
           onClicked: {
             settingsShow = false
-            configs.set (pFontSize, pFontName, pFilePath, pColour)
+            configs.set (fontSize, pFontName, pFilePath, pColour)
           }
 
         }

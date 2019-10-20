@@ -3,14 +3,14 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,17.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 #include "../libSettings/settings.h"
 
 
-Configuration::Configuration () :
-  loaded ( false ), saved ( false )
+Configuration::Configuration ( QQuickView* viewObj ) :
+  view ( viewObj ), property ( nullptr ), loaded ( false ), saved ( false )
 {
 
   current.width = 600;
@@ -165,6 +165,13 @@ void Configuration::set ( int fontSize, QString fontName, QString filePath, QStr
       writeStream.close ();
 
       saved = true;
+
+      if (view)
+        property = view->findChild<QObject*> ( "view" );
+
+      if (property)
+        property->setProperty ( "fontSize", current.fontSize );
+
     } else
       saved = false;
 

@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,19.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -13,7 +13,8 @@ import QtQuick 2.13
 Item {
   id: item
 
-  property int type: 0
+  property int type: 1
+  property string colour: "red"
 
   // property guide:
   // first digit: smart> 1: normal, 2: persuasive
@@ -24,6 +25,7 @@ Item {
   Rectangle {
     id: content
     anchors.fill: parent
+    //    color: parent.colour
     color: {
       if (type === 1)
         return "red"

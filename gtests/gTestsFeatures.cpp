@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,19.10.2019</changed>
+/// <changed>ʆϒʅ,20.10.2019</changed>
 // *******************************************************************************************
 
 #include <gtest/gtest.h>
@@ -53,7 +53,7 @@ TEST ( Entity, Application_RunInWhole )
   view.connect ( view.engine (), &QQmlEngine::quit, &app, &QCoreApplication::quit );
   new QQmlFileSelector ( view.engine (), &view );
 
-  Configuration configs;
+  Configuration configs ( &view );
   view.rootContext ()->setContextProperty ( "configs", &configs );
 
   GameLogic logic ( &configs, &view );
@@ -80,7 +80,7 @@ TEST ( Entity, Application_RunInWhole )
 
 TEST ( Entity, libSettings_Instantiation )
 {
-  Configuration configs;
+  Configuration configs ( nullptr );
   EXPECT_TRUE ( configs.getLoaded () );
 }
 
