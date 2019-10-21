@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,21.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef SETTINGS_H
@@ -19,7 +19,9 @@
 #include <qstring.h>
 
 
-enum Sphare { enumFontSize = 0, enumFontName, enumFilePath, enumColour };
+// configuration's sphere enumeration container
+enum Sphere { enumFontSize = 0, enumFontName, enumFilePath, enumColour };
+// game's configuration container
 struct Settings
 {
   unsigned short width;
@@ -31,25 +33,26 @@ struct Settings
 };
 
 
+// game's configuration wrapper
 class Configuration : public QObject
 {
   Q_OBJECT
 private:
-  QQuickView* view;
-  QObject* property;
+  QQuickView* view; // pointer to QtQml application view (application engine)
+  QObject* property; // pointer to QtQml application base component (view)
 
-  std::string path; // path to application XML settings file
+  std::string path; // path to application's settings XML file
 
   bool loaded; // true if loading was successful
   bool saved; // true if write procedure succeeded
   bool load ( void ); // settings file loader
 public:
-  Settings current; // current settings
+  Settings current; // current/all settings container
 
   Configuration ( QQuickView* );
   //~Configuration ( void );
   Q_INVOKABLE void setDefaults ( void ); // defaults (if the settings file is corrupt)
-  Q_INVOKABLE void set ( int, QString, QString, QString ); // set QML properties to settings file
+  Q_INVOKABLE void set ( int, QString, QString, QString ); // QmlApp's configurations saver
   Q_INVOKABLE bool const getLoaded ( void ); // get loaded status
   Q_INVOKABLE unsigned short const getWidth ( void ); // get screen width
   Q_INVOKABLE unsigned short const getHeight ( void ); // get screen height

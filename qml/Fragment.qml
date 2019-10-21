@@ -3,10 +3,11 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,21.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
+import QtGraphicalEffects 1.0
 
 
 // a game item container
@@ -14,7 +15,6 @@ Item {
   id: item
 
   property int type: 1
-  property string colour: "red"
 
   // property guide:
   // first digit: smart> 1: normal, 2: persuasive
@@ -22,22 +22,58 @@ Item {
   // third digit: y> 1: positive, 2: negative
   property int objData: 000
 
+  // collision property
+  property bool dirty: false
+
   Rectangle {
     id: content
     anchors.fill: parent
-    //    color: parent.colour
+    radius: 3
+    scale: 1
     color: {
       if (type === 1)
         return "red"
       else if (type === 2)
-        return "green"
+        return "white"
       else if (type === 3)
+        return "brown"
+      else if (type === 4)
+        return "black"
+      else if (type === 5)
+        return "green"
+      else if (type === 6)
+        return "purple"
+      else if (type === 7)
         return "blue"
+      else if (type === 8)
+        return "yellow"
+    }
+
+    // collision annimation (animations on fragments shadow and scale)
+    layer.enabled: dirty
+    layer.effect: DropShadow {
+      id: collision
+      verticalOffset: 0
+      color: "darkorange"
+      samples: 0
+      spread: 0.7
+      PropertyAnimation on samples {
+        id: collisionAnimation
+        from: 0
+        to: 60
+        duration: 200
+        running: dirty
+        onStopped: scaleAnimation.start()
+      }
+    }
+    PropertyAnimation on scale {
+      id: scaleAnimation
+      from: 1
+      to: 0
+      duration: 500
+      running: false
     }
   }
 
-  // Todo: each fragment has its own movement animation based on its position
-
-
-  // Todo: later on the smarter movement based on the player position may be added
+  // Todo: persuasive ones
 }

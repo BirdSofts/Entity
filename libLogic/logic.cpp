@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,21.10.2019</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -18,12 +18,21 @@
 
 
 GameLogic::GameLogic ( Configuration* configsObj, QQuickView* viewObj )
-  : configs ( configsObj ), view ( viewObj ), state ( false )
+  : view ( viewObj ), component ( nullptr ), configs ( configsObj ),
+  gaming ( false )
 {
-  screenWidth = configs->getWidth ();
-  screenHeight = configs->getHeight ();
 
+  viewWidth = configs->getWidth ();
+  viewHeight = configs->getHeight () - 100;
+
+  player.x = 0;
+  player.y = 0;
+  playerObj = nullptr;
   health = 20;
+
+  fragments = nullptr;
+  states = nullptr;
+
 };
 
 
@@ -50,71 +59,58 @@ void GameLogic::createItem ( unsigned short index )
     QRandomGenerator qRand;
     qRand.seed ( static_cast<unsigned int>(currentTime) + index * 3 );
 
-    items [index] = qobject_cast<QQuickItem*> (component->create ());
+    fragments [index] = qobject_cast<QQuickItem*> (component->create ());
 
-    if (items [index])
+    if (fragments [index])
     {
-      QQmlEngine::setObjectOwnership ( items [index], QQmlEngine::CppOwnership );
-      items [index]->setParent ( view->rootObject () );
-      items [index]->setVisible ( true );
+      QQmlEngine::setObjectOwnership ( fragments [index], QQmlEngine::CppOwnership );
+      fragments [index]->setParent ( view->rootObject () );
+      fragments [index]->setVisible ( true );
 
       QObject* temp = view->findChild<QObject*> ( "gameCanvas" );
       if (temp)
       {
-        items [index]->setParentItem ( qobject_cast<QQuickItem*> (temp) );
+        fragments [index]->setParentItem ( qobject_cast<QQuickItem*> (temp) );
 
-        items [index]->setProperty ( "type", qFloor ( qRand.generateDouble () * 3 ) + 1 ); // Note: for the time being
-        //int type = qFloor ( dis ( gen ) * 3 ) + 1;
-        //switch (type)
-        //{
-        //  case 1:
-        //    items [index]->setProperty ( "colour", "red" ); // Note: for the time being
-        //    break;
-        //  case 2:
-        //    items [index]->setProperty ( "colour", "green" );
-        //    break;
-        //  case 3:
-        //    items [index]->setProperty ( "colour", "blue" );
-        //    break;
-        //}
+        fragments [index]->setProperty ( "type", qFloor ( qRand.generateDouble () * 8 ) + 1 ); // Note: for the time being
 
-        items [index]->setProperty ( "objData", (qFloor ( dis ( gen ) * 2 ) + 1) * 100 );
+        fragments [index]->setProperty ( "objData", (qFloor ( dis ( gen ) * 2 ) + 1) * 100 );
 
         // randomized creation location (probably somehow out of blue! :))
         int sphere { qFloor ( dis ( gen ) * 200 ) };
         int tempData;
         if (sphere <= 50)
         {
-          items [index]->setProperty ( "x", -20 );
-          items [index]->setProperty ( "y", dis ( gen ) * screenHeight );
-          tempData = items [index]->property ( "objData" ).toInt ();
-          items [index]->setProperty ( "objData", tempData + 11 ); // Note: for the time being
+          fragments [index]->setProperty ( "x", 1 );
+          fragments [index]->setProperty ( "y", dis ( gen ) * viewHeight );
+          tempData = fragments [index]->property ( "objData" ).toInt ();
+          fragments [index]->setProperty ( "objData", tempData + 11 ); // Note: for the time being
         } else
           if (sphere > 50 && sphere <= 100)
           {
-            items [index]->setProperty ( "x", dis ( gen ) * screenWidth );
-            items [index]->setProperty ( "y", -20 );
-            tempData = items [index]->property ( "objData" ).toInt ();
-            items [index]->setProperty ( "objData", tempData + 11 ); // Note: for the time being
+            fragments [index]->setProperty ( "x", dis ( gen ) * viewWidth );
+            fragments [index]->setProperty ( "y", 1 );
+            tempData = fragments [index]->property ( "objData" ).toInt ();
+            fragments [index]->setProperty ( "objData", tempData + 11 ); // Note: for the time being
           } else
             if (sphere > 100 && sphere <= 150)
             {
-              items [index]->setProperty ( "x", screenWidth + 20 );
-              items [index]->setProperty ( "y", dis ( gen ) * screenHeight );
-              tempData = items [index]->property ( "objData" ).toInt ();
-              items [index]->setProperty ( "objData", tempData + 22 ); // Note: for the time being
+              fragments [index]->setProperty ( "x", viewWidth - 1 );
+              fragments [index]->setProperty ( "y", dis ( gen ) * viewHeight - 1 );
+              tempData = fragments [index]->property ( "objData" ).toInt ();
+              fragments [index]->setProperty ( "objData", tempData + 22 ); // Note: for the time being
             } else
               if (sphere > 150 && sphere <= 200)
               {
-                items [index]->setProperty ( "x", dis ( gen ) * screenWidth );
-                items [index]->setProperty ( "y", screenHeight + 20 );
-                tempData = items [index]->property ( "objData" ).toInt ();
-                items [index]->setProperty ( "objData", tempData + 22 ); // Note: for the time being
+                fragments [index]->setProperty ( "x", dis ( gen ) * viewWidth - 1 );
+                fragments [index]->setProperty ( "y", viewHeight - 1 );
+                tempData = fragments [index]->property ( "objData" ).toInt ();
+                fragments [index]->setProperty ( "objData", tempData + 22 ); // Note: for the time being
               }
 
             tempData = temp->property ( "itemSize" ).toInt ();
-            items [index]->setProperty ( "width", tempData );
-            items [index]->setProperty ( "height", tempData );
+            fragments [index]->setProperty ( "width", tempData );
+            fragments [index]->setProperty ( "height", tempData );
       } else
       {
         // Todo: logger service invoker
@@ -132,9 +128,19 @@ void GameLogic::createItem ( unsigned short index )
 }
 
 
-Q_INVOKABLE bool const GameLogic::getState ( void )
+void GameLogic::collision ( void )
 {
-  return state;
+
+  // Todo: show some action
+
+
+
+}
+
+
+Q_INVOKABLE bool const GameLogic::isGaming ( void )
+{
+  return gaming;
 };
 
 
@@ -144,20 +150,26 @@ Q_INVOKABLE void GameLogic::newGame ( void )
   //QObject* canvas = view->findChild<QObject*> ( "gameCanvas" );
   //canvas->setProperty ( "health", health );
 
-  items = new (std::nothrow) QQuickItem * [20];
+  fragments = new (std::nothrow) QQuickItem * [20];
+  states = new (std::nothrow) Fragment [20];
 
   component = new QQmlComponent ( view->engine (), QUrl ( "qrc:/qml/Fragment.qml" ) );
-  if (component->isReady ())
+  if (component->isReady () && states && fragments)
   {
+
     for (unsigned short i = 0; i < health; i++)
     {
-      items [i] = nullptr;
+      fragments [i] = nullptr;
       createItem ( i );
-      state = true;
+      states [i].id = i;
+      states [i].onBusiness = true;
+      states [i].delay = 3;
     }
+    gaming = true;
+
   } else
   {
-    state = false;
+    gaming = false;
     // Todo: logger service invoker
   }
 
@@ -174,62 +186,100 @@ Q_INVOKABLE void GameLogic::tick ( void )
   // Todo: randomized movement based on current entity position
   // Todo: speed based on game level
 
-  for (unsigned short i = 0; i < health; i++)
+  if (gaming)
   {
-    if (state && items [i])
+
+    for (unsigned short i = 0; i < health; i++)
     {
-      // movement direction based on the randomized location (for the time being)
-      int tempData = items [i]->property ( "objData" ).toInt ();
-      int tempX = items [i]->property ( "x" ).toInt ();
-      int tempY = items [i]->property ( "y" ).toInt ();
-      if ((tempData / 100) == 2)
+      if (fragments [i])
       {
-        if ((tempData % 100) == 11)
+        // movement direction based on the randomized location (for the time being)
+        int tempData = fragments [i]->property ( "objData" ).toInt ();
+        int tempX = fragments [i]->property ( "x" ).toInt ();
+        int tempY = fragments [i]->property ( "y" ).toInt ();
+
+        if ((tempX >= viewWidth)
+             || (tempY >= viewHeight)
+             || (tempX <= 0) || (tempY <= 0))
         {
-          items [i]->setProperty ( "x", tempX + 5 );
-          items [i]->setProperty ( "y", tempY + 5 );
+          delete fragments [i];
+          fragments [i] = nullptr;
+          states [i].id = 0;
+          states [i].onBusiness = false;
+          states [i].delay = 0;
         } else
         {
-          items [i]->setProperty ( "x", tempX - 5 );
-          items [i]->setProperty ( "y", tempY - 5 );
+          if ((tempData / 100) == 2)
+          {
+            if ((tempData % 100) == 11)
+            {
+              fragments [i]->setProperty ( "x", tempX + 5 );
+              fragments [i]->setProperty ( "y", tempY + 5 );
+              fragments [i]->setProperty ( "dirty", true );
+            } else
+            {
+              fragments [i]->setProperty ( "x", tempX - 5 );
+              fragments [i]->setProperty ( "y", tempY - 5 );
+            }
+          } else
+          {
+            if ((tempData % 100) == 11)
+            {
+              fragments [i]->setProperty ( "x", tempX + 3 );
+              fragments [i]->setProperty ( "y", tempY + 3 );
+            } else
+            {
+              fragments [i]->setProperty ( "x", tempX - 3 );
+              fragments [i]->setProperty ( "y", tempY - 3 );
+            }
+          }
         }
       } else
       {
-        if ((tempData % 100) == 11)
-        {
-          items [i]->setProperty ( "x", tempX + 3 );
-          items [i]->setProperty ( "y", tempY + 3 );
-        } else
-        {
-          items [i]->setProperty ( "x", tempX - 3 );
-          items [i]->setProperty ( "y", tempY - 3 );
-        }
+        createItem ( i );
+        states [i].id = i;
+        states [i].onBusiness = true;
+        states [i].delay = 3;
       }
+
+
     }
   }
 
 };
 
 
-Q_INVOKABLE void GameLogic::conflict ( void )
+Q_INVOKABLE void GameLogic::update ( QString objName, int x, int y )
 {
-  // Todo: show some action
-}
+
+  // game's universe actions/input preparations
+
+  player.x = x;
+  player.y = y;
+
+
+
+};
 
 
 Q_INVOKABLE void GameLogic::endGame ( void )
 {
-  state = false;
 
-  //delete [] * items;
-  //items = nullptr;
+  gaming = false;
+
+  delete [] states;
+  states = nullptr;
+
+  //delete [] * fragments;
+  //fragments = nullptr;
 
   for (unsigned short i = 0; i < health; i++)
   {
-    if (items [i])
+    if (fragments [i])
     {
-      delete items [i];
-      items [i] = nullptr;
+      delete fragments [i];
+      fragments [i] = nullptr;
     }
   }
+
 }

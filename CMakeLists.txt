@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,16.10.2019</changed>
+#/ <changed>ʆϒʅ,21.10.2019</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -47,6 +47,7 @@ find_package(Qt5 COMPONENTS
 
 add_subdirectory(libLogic)
 add_subdirectory(libSettings)
+add_subdirectory(libTale)
 
 if(MSVC)
   add_subdirectory(gtests)
@@ -93,6 +94,7 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC Qt5::QuickControls2
   PUBLIC libLogic
   PUBLIC libSettings
+  PUBLIC libTale
   )
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
