@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,21.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef LOGIC_H
@@ -34,6 +34,8 @@ struct Smily
 struct Fragment
 {
   unsigned short id;
+  int x;
+  int y;
   bool onBusiness;
   unsigned short delay;
 };
@@ -55,7 +57,9 @@ private:
   QQuickItem* playerObj; // represents entity object
   unsigned short health; // entity's health
   QQuickItem** fragments; // collision seekers container
+  int itemSize; // fragments' width/height
   Fragment* states; // collision seekers state container
+  unsigned short count; // fragment's count
 
   bool gaming;
 

@@ -1,6 +1,8 @@
 # Introduction 
 Entity as a funny game aims exact and firm to be self-explanatory! :)
 
+<img href="https://github.com/BirdSofts" src="https://github.com/BirdSofts/Entity/blob/master/screenshots/screenshot_03.jpg" width="800" height="600" alt="ScreenShot">
+
 <table>
 <tr>
 <td><b>Creator's Website:</b></td>

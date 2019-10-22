@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,21.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -28,10 +28,12 @@ GameLogic::GameLogic ( Configuration* configsObj, QQuickView* viewObj )
   player.x = 0;
   player.y = 0;
   playerObj = nullptr;
-  health = 20;
+  health = 3;
 
   fragments = nullptr;
+  itemSize = 0;
   states = nullptr;
+  count = 20;
 
 };
 
@@ -108,9 +110,9 @@ void GameLogic::createItem ( unsigned short index )
                 fragments [index]->setProperty ( "objData", tempData + 22 ); // Note: for the time being
               }
 
-            tempData = temp->property ( "itemSize" ).toInt ();
-            fragments [index]->setProperty ( "width", tempData );
-            fragments [index]->setProperty ( "height", tempData );
+            itemSize = temp->property ( "itemSize" ).toInt ();
+            fragments [index]->setProperty ( "width", itemSize );
+            fragments [index]->setProperty ( "height", itemSize );
       } else
       {
         // Todo: logger service invoker
@@ -131,9 +133,21 @@ void GameLogic::createItem ( unsigned short index )
 void GameLogic::collision ( void )
 {
 
-  // Todo: show some action
+  //xx Todo: show some action
 
+  for (unsigned short i = 0; i < count; i++)
+  {
+    if (fragments [i])
+    {
 
+      if ((states [i].x + itemSize - 5 >= player.x + 25)
+           && (states [i].x + itemSize - 5 <= player.x + 75)
+           && (states [i].y + itemSize - 5 >= player.y + 25)
+           && (states [i].y + itemSize - 5 <= player.y + 75))
+        fragments [i]->setProperty ( "dirty", true );
+
+    }
+  }
 
 }
 
@@ -157,7 +171,7 @@ Q_INVOKABLE void GameLogic::newGame ( void )
   if (component->isReady () && states && fragments)
   {
 
-    for (unsigned short i = 0; i < health; i++)
+    for (unsigned short i = 0; i < count; i++)
     {
       fragments [i] = nullptr;
       createItem ( i );
@@ -189,22 +203,24 @@ Q_INVOKABLE void GameLogic::tick ( void )
   if (gaming)
   {
 
-    for (unsigned short i = 0; i < health; i++)
+    for (unsigned short i = 0; i < count; i++)
     {
       if (fragments [i])
       {
         // movement direction based on the randomized location (for the time being)
         int tempData = fragments [i]->property ( "objData" ).toInt ();
-        int tempX = fragments [i]->property ( "x" ).toInt ();
-        int tempY = fragments [i]->property ( "y" ).toInt ();
+        states [i].x = fragments [i]->property ( "x" ).toInt ();
+        states [i].y = fragments [i]->property ( "y" ).toInt ();
 
-        if ((tempX >= viewWidth)
-             || (tempY >= viewHeight)
-             || (tempX <= 0) || (tempY <= 0))
+        if ((states [i].x >= viewWidth)
+             || (states [i].y >= viewHeight)
+             || (states [i].x <= 0) || (states [i].y <= 0))
         {
           delete fragments [i];
           fragments [i] = nullptr;
           states [i].id = 0;
+          states [i].x = 0;
+          states [i].y = 0;
           states [i].onBusiness = false;
           states [i].delay = 0;
         } else
@@ -213,31 +229,41 @@ Q_INVOKABLE void GameLogic::tick ( void )
           {
             if ((tempData % 100) == 11)
             {
-              fragments [i]->setProperty ( "x", tempX + 5 );
-              fragments [i]->setProperty ( "y", tempY + 5 );
-              fragments [i]->setProperty ( "dirty", true );
+              fragments [i]->setProperty ( "x", states [i].x + 5 );
+              fragments [i]->setProperty ( "y", states [i].y + 5 );
+              states [i].x += 5;
+              states [i].y += 5;
             } else
             {
-              fragments [i]->setProperty ( "x", tempX - 5 );
-              fragments [i]->setProperty ( "y", tempY - 5 );
+              fragments [i]->setProperty ( "x", states [i].x - 5 );
+              fragments [i]->setProperty ( "y", states [i].y - 5 );
+              states [i].x -= 5;
+              states [i].y -= 5;
             }
           } else
           {
             if ((tempData % 100) == 11)
             {
-              fragments [i]->setProperty ( "x", tempX + 3 );
-              fragments [i]->setProperty ( "y", tempY + 3 );
+              fragments [i]->setProperty ( "x", states [i].x + 3 );
+              fragments [i]->setProperty ( "y", states [i].x + 3 );
+              states [i].x += 3;
+              states [i].y += 3;
             } else
             {
-              fragments [i]->setProperty ( "x", tempX - 3 );
-              fragments [i]->setProperty ( "y", tempY - 3 );
+              fragments [i]->setProperty ( "x", states [i].x - 3 );
+              fragments [i]->setProperty ( "y", states [i].y - 3 );
+              states [i].x -= 3;
+              states [i].y -= 3;
             }
           }
         }
+        collision ();
       } else
       {
         createItem ( i );
         states [i].id = i;
+        states [i].x = 0;
+        states [i].y = 0;
         states [i].onBusiness = true;
         states [i].delay = 3;
       }
@@ -257,8 +283,6 @@ Q_INVOKABLE void GameLogic::update ( QString objName, int x, int y )
   player.x = x;
   player.y = y;
 
-
-
 };
 
 
@@ -273,7 +297,7 @@ Q_INVOKABLE void GameLogic::endGame ( void )
   //delete [] * fragments;
   //fragments = nullptr;
 
-  for (unsigned short i = 0; i < health; i++)
+  for (unsigned short i = 0; i < count; i++)
   {
     if (fragments [i])
     {

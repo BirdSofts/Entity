@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,21.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef SETTINGS_H
@@ -20,7 +20,7 @@
 
 
 // configuration's sphere enumeration container
-enum Sphere { enumFontSize = 0, enumFontName, enumFilePath, enumColour };
+enum Sphere { enumFontSize = 0, enumFontName, enumColour };
 // game's configuration container
 struct Settings
 {
@@ -28,7 +28,6 @@ struct Settings
   unsigned short height;
   int fontSize;
   QString fontName;
-  QString filePath;
   QString colour;
 };
 
@@ -52,13 +51,12 @@ public:
   Configuration ( QQuickView* );
   //~Configuration ( void );
   Q_INVOKABLE void setDefaults ( void ); // defaults (if the settings file is corrupt)
-  Q_INVOKABLE void set ( int, QString, QString, QString ); // QmlApp's configurations saver
+  Q_INVOKABLE void set ( int, QString, QString ); // QmlApp's configurations saver
   Q_INVOKABLE bool const getLoaded ( void ); // get loaded status
   Q_INVOKABLE unsigned short const getWidth ( void ); // get screen width
   Q_INVOKABLE unsigned short const getHeight ( void ); // get screen height
   Q_INVOKABLE int const getFontSize ( void ); // get font size
   Q_INVOKABLE QString const getFontName ( void ); // get font name
-  Q_INVOKABLE QString const getFilePath ( void ); // get file path
   Q_INVOKABLE QString const getColour ( void ); // get colour
 };
 

@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -26,6 +26,8 @@ Item {
   property bool settingsShow: false
 
   property int fontSize: configs.getFontSize()
+  property string fontName: configs.getFontName()
+  property string colour: configs.getColour()
 
   Column {
     x: -(width - width)
@@ -35,12 +37,17 @@ Item {
       //      visible: false // first approach (without slide ability)
       First {
         fontSize: view.fontSize
+        fontName: view.fontName
+        colour: view.colour
       }
     }
+
     Row {
       //      visible: false
       Game {
         fontSize: view.fontSize
+        fontName: view.fontName
+        colour: view.colour
       }
     }
   }
@@ -48,14 +55,16 @@ Item {
   Column {
     x: width
     y: -(height - height)
+
     Row {
       //      visible: false
       Configs {
         fontSize: view.fontSize
+        fontName: view.fontName
+        colour: view.colour
       }
     }
   }
-
 
   states: [
     State {
@@ -66,6 +75,7 @@ Item {
         y: -height
       }
     },
+
     State {
       name: "gamingExit"
       when: gameStarted === false && settingsShow === false
@@ -74,6 +84,7 @@ Item {
         y: -(height - height)
       }
     },
+
     State {
       name: "configuring"
       when: gameStarted === false && settingsShow === true
@@ -82,6 +93,7 @@ Item {
         x: -width
       }
     },
+
     State {
       name: "configuringExit"
       when: gameStarted === false && settingsShow === false

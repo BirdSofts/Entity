@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,21.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -12,6 +12,7 @@ import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.0
 import "../logic.js" as LogicJs
 
+
 // page base container
 Item {
   id: gameCanvas
@@ -19,12 +20,14 @@ Item {
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
-  ThemeItem {}
+  ThemeItem { color: colour }
 
   property int health: 0
   property int itemSize: 10
 
   property int fontSize: 0
+  property string fontName: ""
+  property string colour: ""
 
   Item {
     id: draggable
@@ -56,19 +59,6 @@ Item {
         onFinished: textExpandAnimation.start()
       }
     }
-
-    // drop area at the bottom of page
-    //  DropArea {
-    //    width: parent.width
-    //    height: 150
-    //    anchors.bottom: parent.bottom
-
-    //    Rectangle {
-    //      anchors.fill: parent
-    //      color: "gray"
-    //      visible: parent.containsDrag
-    //    }
-    //  }
 
     // smily canvas (draw area)
     Canvas {
@@ -182,7 +172,7 @@ Item {
       function caller() {
         if (currentScale === 1.0) {
           enterAnimation.start()
-          currentScale = 0.5
+          currentScale = 0.3
           //LogicJs.newGame()
           logic.newGame()
         } else {
@@ -202,20 +192,23 @@ Item {
     }
   }
 
-  // tale area (narator space)
+  // tale area (narrator space)
   Rectangle {
     width: parent.width
     height: 100
+    color: "#00000000"
+    antialiasing: true
+    opacity: 1
     anchors.bottom: parent.bottom
-    color: "white"
-    opacity: 0.8
+    border.color: "yellow"
+    border.width: 1
 
     Button {
       id: gameExit
       background: ThemeButton {}
       text: qsTr("Exit")
       anchors.bottom: parent.bottom
-      font.family: configs.getFontName()
+      font.family: fontName
       font.pixelSize: fontSize
       contentItem: Text {
         // adjustments to button text

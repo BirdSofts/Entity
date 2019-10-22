@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -17,17 +17,19 @@ Item {
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
-  ThemeItem {}
+  ThemeItem { color: colour }
 
   property int fontSize: 0
+  property string fontName: ""
+  property string colour: ""
 
   Button {
     id: gameStarter
     text: qsTr("Start")
-    anchors.verticalCenterOffset: -30
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
-    font.family: configs.getFontName()
+    anchors.verticalCenterOffset: -50
+    font.family: fontName
     font.pixelSize: fontSize
     background: ThemeButton {}
     contentItem: Text { // adjustments to button text
@@ -42,16 +44,16 @@ Item {
     }
     padding: 10
     onClicked: gameStarted = true
-
   }
+
   Button {
     id: settingsShower
     background: ThemeButton {}
     text: qsTr("Settings")
-    anchors.verticalCenterOffset: 30
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
-    font.family: configs.getFontName()
+    anchors.verticalCenterOffset: 50
+    font.family: fontName
     font.pixelSize: fontSize
     contentItem: Text { // adjustments to button text
       text: parent.text
@@ -65,8 +67,6 @@ Item {
     }
     padding: 10
     onClicked: settingsShow = true
-
   }
-
 
 }

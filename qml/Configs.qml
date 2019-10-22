@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,21.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -19,13 +19,11 @@ Item {
   width: configs.getWidth()
   height: configs.getHeight()
   anchors.margins: 5
-  ThemeItem {}
+  ThemeItem { color: colour }
 
   property int fontSize: 0
-
-  property string pFontName: configs.getFontName()
-  property string pFilePath: configs.getFilePath()
-  property string pColour: configs.getColour()
+  property string fontName: ""
+  property string colour: ""
 
   // page's scroll view control
   ScrollView {
@@ -37,6 +35,7 @@ Item {
     ObjectModel {
       id: items
 
+
       // setting 1: font size setting base container (pane control)
       Pane {
         anchors.horizontalCenter: parent.horizontalAlignment
@@ -47,15 +46,18 @@ Item {
         // layout (container of font size controls)
         RowLayout {
           anchors.fill: parent
+
           // font size label
           Label {
             id: fontSizeLabel
             text: qsTr("Font size: " + sliderFont.value)
             font.pixelSize: fontSize
+            font.family: fontName
             padding: 10
             Layout.fillWidth: true
             Layout.minimumWidth: 90
           }
+
           // font size slider
           Slider {
             id: sliderFont
@@ -74,17 +76,20 @@ Item {
         }
       }
 
+
       // setting 2: font name setting base container (layout control)
       RowLayout {
         anchors.horizontalCenter: parent.horizontalAlignment
         width: pageSettings.width - 20
+
         // font name button
         Button {
           id: fontType
           background: ThemeButton {}
           Layout.fillWidth: true
-          text: qsTr("Font: " + configs.getFontName())
+          text: qsTr("Font: " + fontName)
           font.pixelSize: fontSize
+          font.family: fontName
           contentItem: Text { // adjustments to button text
             text: parent.text
             font: parent.font
@@ -111,8 +116,11 @@ Item {
             parent: Overlay.overlay
             contentItem: Text {
               color: "red"
+              font.pixelSize: fontSize
+              font.family: fontName
             }
 
+            // busy indicator component
             BusyIndicator {
               id: indicator
               background: ThemeItem { opacity: 0.0 }
@@ -135,87 +143,56 @@ Item {
               delegate: ItemDelegate {
                 text: modelData
                 font.pixelSize: fontSize
+                font.family: fontName
                 width: parent.width
                 highlighted: ListView.isCurrentItem
                 onClicked: {
                   fontType.text = qsTr("Font: " + modelData)
-                  pFontName = modelData
+                  fontName = modelData
                   //                  highlighted = ListView.isCurrentItem
                   //                    console.log("clicked:", modelData)
                   fontPopup.close()
                 }
               }
-              // popup scroll functionality
+
+              // popup scroll functionality (a default scroll indicator)
               ScrollIndicator.vertical: ScrollIndicator {}
             }
+
             onOpened: indicator.running = true
             onClosed: indicator.running = false
-
           }
         }
       }
 
-      // setting 3: file path setting base container (layout control)
-      RowLayout {
-        anchors.horizontalCenter: parent.horizontalAlignment
-        width: pageSettings.width - 20
-        // file path button
-        Button {
-          id: path
-          background: ThemeButton {}
-          Layout.fillWidth: true
-          text: qsTr("Path: " + configs.getFilePath())
-          font.pixelSize: fontSize
-          contentItem: Text { // adjustments to button text
-            text: parent.text
-            font: parent.font
-            //            opacity: enabled ? 1.0 : 0.3
-            opacity: parent.opacity
-            //            color: parent.down ? "#17a81a" : "#21be2b"
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            elide: Text.ElideRight // omit characters from right (dynamic resizing)
-          }
-          padding: 10
-          onClicked: pathDialog.open()
 
-          // file path dialog (base container)
-          FileDialog {
-            id: pathDialog
-            title: "Please choose a file"
-            folder: shortcuts.desktop
-            onAccepted: {
-              path.text = qsTr("Path: " + pathDialog.fileUrl)
-              pFilePath = pathDialog.fileUrl
-              //                Qt.quit() // exit the application
-            }
-          }
-        }
-      }
-
-      // setting 4: colour setting
+      // setting 3: colour setting
       // colour label container (layout control)
       RowLayout {
         anchors.horizontalCenter: parent.horizontalAlignment
         width: pageSettings.width - 20
+
         // font size label
         Label {
           id: colourLable
           background: ThemeItem { opacity: 0.0 }
-          text: qsTr("Current Colour: " + configs.getColour())
+          text: qsTr("Current Colour: " + colour)
           font.pixelSize: fontSize
+          font.family: fontName
           padding: 10
           Layout.fillWidth: true
         }
       }
+
       // colour base container (layout control)
       RowLayout {
         anchors.horizontalCenter: parent.horizontalAlignment
         width: pageSettings.width - 20
+
         // colour path view base container
         Rectangle {
           id: pathBase
-          ThemeItem {}
+          ThemeItem { color: colour }
           Layout.fillWidth: true
           Layout.preferredWidth: 300
           Layout.minimumHeight: 200
@@ -236,9 +213,12 @@ Item {
                 id: nameText
                 text: name
                 font.pixelSize: fontSize
+                font.family: fontName
               }
             }
           }
+
+          // path view component
           PathView {
             id: pathView
             model: ColourModel {}
@@ -264,33 +244,25 @@ Item {
             }
             onCurrentIndexChanged: {
               colourLable.text = qsTr("Current Colour: " + currentItem.children[1].text)
-              pColour = currentItem.children[1].text
+              colour = currentItem.children[1].text
             }
           }
         }
       }
 
-      // setting 5:
-      RowLayout {
-        anchors.margins: 10
-        anchors.horizontalCenter: parent.horizontalAlignment
-        Label {
-          background: ThemeItem { opacity: 0.0 }
-          text: "Item 1"
-          font.pixelSize: fontSize
-        }
-      }
 
-      // setting 6:
-      RowLayout {
-        anchors.margins: 10
-        anchors.horizontalCenter: parent.horizontalAlignment
-        Label {
-          background: ThemeItem { opacity: 0.0 }
-          text: "Item 2"
-          font.pixelSize: fontSize
-        }
-      }
+      // setting 4:
+      //      RowLayout {
+      //        anchors.margins: 10
+      //        anchors.horizontalCenter: parent.horizontalAlignment
+      //        Label {
+      //          background: ThemeItem { opacity: 0.0 }
+      //          text: "Item 1"
+      //          font.pixelSize: fontSize
+      //          font.family: fontName
+      //        }
+      //      }
+
 
       // Exit button:
       RowLayout {
@@ -302,6 +274,7 @@ Item {
           text: qsTr("Return")
           Layout.fillWidth: true
           font.pixelSize: fontSize
+          font.family: fontName
           contentItem: Text { // adjustments to button text
             text: parent.text
             font: parent.font
@@ -315,9 +288,8 @@ Item {
           padding: 10
           onClicked: {
             settingsShow = false
-            configs.set (fontSize, pFontName, pFilePath, pColour)
+            configs.set (fontSize, fontName, colour)
           }
-
         }
       }
 

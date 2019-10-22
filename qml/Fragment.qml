@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,21.10.2019</changed>
+/// <changed>ʆϒʅ,22.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -25,6 +25,7 @@ Item {
   // collision property
   property bool dirty: false
 
+  // fragment base container (fragment's body)
   Rectangle {
     id: content
     anchors.fill: parent
@@ -49,7 +50,7 @@ Item {
         return "yellow"
     }
 
-    // collision annimation (animations on fragments shadow and scale)
+    // collision animations (animations on fragments shadow and scale)
     layer.enabled: dirty
     layer.effect: DropShadow {
       id: collision
