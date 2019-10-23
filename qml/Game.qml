@@ -3,11 +3,11 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,22.10.2019</changed>
+/// <changed>ʆϒʅ,24.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
-//import QtQuick.Layouts 1.3
+import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.0
 import "../logic.js" as LogicJs
@@ -22,20 +22,28 @@ Item {
   anchors.margins: 5
   ThemeItem { color: colour }
 
+  // game logic properties
   property int health: 0
   property int itemSize: 10
 
+  // theme properties
   property int fontSize: 0
   property string fontName: ""
   property string colour: ""
+
+  property int start: 1 // new game state controler
+
+  property int current: 1 // current idle sentence controler
 
   Item {
     id: draggable
     width: parent.width
     height: parent.height - 100
 
-    Text {
-      id: smilyText
+
+    // introduction Text (Entity word containing a twin of animations)
+    Label {
+      id: entityText
       text: qsTr("Entity")
       color: "darkBlue"
       y: parent.y + 10
@@ -43,24 +51,112 @@ Item {
       font.pointSize: 12
       font.bold: true
 
-      // text pair animations
+      // entity text pair animations
       PropertyAnimation on font.letterSpacing {
         id: textExpandAnimation
         from: 0
-        to: 5
+        to: 8
         duration: 1000
         onFinished: textShrinkAnimation.start()
       }
       PropertyAnimation on font.letterSpacing {
         id: textShrinkAnimation
-        from: 5
+        from: 8
         to: 0
         duration: 1000
         onFinished: textExpandAnimation.start()
       }
     }
 
-    // smily canvas (draw area)
+
+    // game's start procedure (countdown timer + trigger of new game's timer)
+    Label {
+      id: startText
+      text: "Welcome to the world of entity! :|"
+      color: "red"
+      y: parent.y + 80
+      anchors.horizontalCenter: parent.horizontalCenter
+      font.pointSize: 12
+      font.bold: true
+      scale: 1
+
+      // start text animation
+      PropertyAnimation on scale {
+        id: startTextAnimation
+        from: 1
+        to: 3
+        duration: 300
+        running: false
+      }
+
+      // start text timer functionality
+      Timer {
+        id: startTextTimer
+        interval: 500
+        running: false
+        repeat: true
+        onTriggered: startText.startGame()
+      }
+      function startGame()
+      {
+        //          startTextAnimation.stop()
+        if (start <= 4)
+        {
+          if (start === 1)
+          {
+            startText.text = "3"
+            start++
+          } else
+            if (start === 2)
+            {
+              startText.text = "2"
+              start++
+            } else
+              if (start === 3)
+              {
+                startText.text = "1"
+                start++
+              } else
+              {
+                startText.text = "Survive!"
+                start++
+                newGameTimer.start()
+              }
+          startTextAnimation.start()
+        } else
+        {
+          start = 1
+          startText.text = ""
+          startTextAnimation.stop()
+          startTextTimer.stop()
+        }
+      }
+    }
+
+
+    // game's timers (game's logic)
+    Timer {
+      id: newGameTimer
+      interval: 2000
+      running: false
+      repeat: false
+      onTriggered: {
+        //                LogicJs.newGame()
+        logic.newGame()
+        tickTimer.start()
+      }
+    }
+    Timer {
+      id: tickTimer
+      interval: 1
+      running: false
+      repeat: true
+      //        onTriggered: LogicJs.tick()
+      onTriggered: logic.tick()
+    }
+
+
+    // smily canvas (represents game's main character)
     Canvas {
       id: smily
       objectName: "smily"
@@ -74,10 +170,6 @@ Item {
 
       // smily scale
       property real currentScale: 1.0
-
-      //      property int radius: 50
-      //      Component.onCompleted: radius = 20
-      //      onRadiousChanged: { requestPaint() }
 
       // drawing properties of smily
       //    property color fillStyle: "#900808FF" // ARGB
@@ -114,15 +206,6 @@ Item {
         context.restore()
       }
 
-      // game's timer
-      Timer {
-        interval: 1
-        running: true
-        repeat: true
-        //onTriggered: LogicJs.tick()
-        onTriggered: logic.tick()
-      }
-
       // draggable
       MouseArea {
         id: smilyDragArea
@@ -134,8 +217,14 @@ Item {
         drag.maximumX: draggable.width - 100
         drag.maximumY: draggable.height - 100
         onPressedChanged: smily.caller()
-        //onReleased: LogicJs.endGame()
-        onReleased: logic.endGame()
+
+        onReleased: {
+          if (logic.isGaming())
+          {
+            //          LogicJs.endGame()
+            logic.endGame()
+          }
+        }
       }
 
       // smily pair animations
@@ -154,30 +243,27 @@ Item {
         running: false
       }
 
-      // caller + delay function (radius approach)
-      function delay() {
-        if (radius != 20) {
-          var time = new Date().getTime()
-          for (var i = radius; i >= 20; i -= 0.01) {
-            for (var j = 0; i < 100000; i++)
-              if ((new Date().getTime() - time) > 10)
-                break
-            radius = i
-            requestPaint()
-          }
-        }
-      }
-
-      // animation caller function
-      function caller() {
-        if (currentScale === 1.0) {
+      // smily animations caller function
+      function caller()
+      {
+        if (currentScale === 1.0)
+        {
           enterAnimation.start()
+          startTextTimer.start()
           currentScale = 0.3
-          //LogicJs.newGame()
-          logic.newGame()
-        } else {
+          sentence.text = "\n"
+          sentenceTimer.stop()
+        } else
+        {
+          start = 1
+          startText.text = ""
+          startTextTimer.stop()
+          newGameTimer.stop()
+          tickTimer.stop()
           exitAnimation.start()
           currentScale = 1.0
+          sentence.text = "\n"
+          sentenceTimer.start()
         }
       }
 
@@ -192,8 +278,10 @@ Item {
     }
   }
 
+
   // tale area (narrator space)
   Rectangle {
+    id: tale
     width: parent.width
     height: 100
     color: "#00000000"
@@ -203,26 +291,88 @@ Item {
     border.color: "yellow"
     border.width: 1
 
-    Button {
-      id: gameExit
-      background: ThemeButton {}
-      text: qsTr("Exit")
-      anchors.bottom: parent.bottom
-      font.family: fontName
-      font.pixelSize: fontSize
-      contentItem: Text {
-        // adjustments to button text
-        text: parent.text
-        font: parent.font
-        //            opacity: enabled ? 1.0 : 0.3
-        opacity: parent.opacity
-        //            color: parent.down ? "#17a81a" : "#21be2b"
-        horizontalAlignment: Text.AlignLeft
+    // tale area layout container
+    GridLayout {
+      id: taleGrid
+      anchors.horizontalCenter: parent.horizontalAlignment
+      width: parent.width
+      height: parent.height
+      rows: 2
+      columns: 1
+      columnSpacing: 0
+      rowSpacing: 0
+
+      // idle sentences
+      Label {
+        id: sentence
+        Layout.row: 0
+        text: "This one build itself on its own! :)\n"
+        font.family: "Candara"
+        font.pixelSize: 20
+        color: "black"
+        Layout.fillWidth: true
+        horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight // omit characters from right (dynamic resizing)
+        wrapMode: Text.WordWrap
+        leftPadding: 5
+        rightPadding: 5
+
+        Timer {
+          id: sentenceTimer
+          interval: 3000
+          running: true
+          repeat: true
+          onTriggered: sentence.sentences()
+        }
+
+        function sentences()
+        {
+          if (current === 1)
+          {
+            sentence.text = "Ask and you shall receive...\n"
+            current++
+          } else
+            if(current === 2)
+            {
+              sentence.text = "Expect and you shall persuade...\n"
+              current++
+            } else
+              if(current === 3)
+              {
+                sentence.text = "Deceive and you shall answer...\n"
+                current++
+              } else
+              {
+                sentence.text = "Force and you shall be doomed...\n"
+                current = 1
+              }
+        }
       }
-      padding: 10
-      onClicked: gameStarted = false
+
+      // exit button
+      Button {
+        id: gameExit
+        Layout.row: 1
+        background: ThemeButton {}
+        text: qsTr("Return")
+        font.family: "Candara"
+        font.pixelSize: 20
+        contentItem: Text {
+          // adjustments to button text
+          text: parent.text
+          font: parent.font
+          color: "black"
+          //            opacity: enabled ? 1.0 : 0.3
+          opacity: parent.opacity
+          //            color: parent.down ? "#17a81a" : "#21be2b"
+          horizontalAlignment: Text.AlignLeft
+          verticalAlignment: Text.AlignVCenter
+          elide: Text.ElideRight // omit characters from right (dynamic resizing)
+        }
+        Layout.fillWidth: true
+        padding: 5
+        onClicked: gameStarted = false
+      }
     }
   }
 

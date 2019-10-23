@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,23.10.2019</changed>
 // *******************************************************************************************
 
 #include <qguiapplication.h>
@@ -14,6 +14,7 @@
 
 #include "./libLogic/logic.h"
 #include "./libSettings/settings.h"
+#include "./libTale/tale.h"
 
 
 int main ( int argc, char* argv [] )
@@ -52,7 +53,9 @@ int main ( int argc, char* argv [] )
   view.rootContext ()->setContextProperty ( "configs", &configs );
 
   GameLogic logic ( &configs, &view );
+  Tale tale ( &logic );
   view.rootContext ()->setContextProperty ( "logic", &logic );
+
 
   view.setSource ( url );
 

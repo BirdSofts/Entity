@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,21.10.2019</created>
-#/ <changed>ʆϒʅ,21.10.2019</changed>
+#/ <changed>ʆϒʅ,23.10.2019</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -35,5 +35,6 @@ endif(WIN32)
 
 add_library(${TARGET_NAME} ${SOURCE_FILES})
 
-#target_link_libraries(${TARGET_NAME}
-#  )
+target_link_libraries(${TARGET_NAME}
+  PUBLIC libLogic
+  )

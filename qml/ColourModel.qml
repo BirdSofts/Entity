@@ -1,9 +1,9 @@
 ﻿// *******************************************************************************************
 /// <summary>
-/// 
+///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,16.10.2019</changed>
+/// <changed>ʆϒʅ,23.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -12,99 +12,31 @@ import QtQuick 2.13
 // colour model container
 ListModel {
   ListElement {
-    name: "Blue"
-    colour: "blue"
+    name: "darkcyan"
+    colour: "darkcyan"
   }
   ListElement {
-    name: "Red"
-    colour: "red"
+    name: "darkred"
+    colour: "darkred"
   }
   ListElement {
-    name: "Gray"
-    colour: "gray"
+    name: "darkgray"
+    colour: "darkgray"
   }
   ListElement {
-    name: "Purple"
-    colour: "purple"
+    name: "darkorchid"
+    colour: "darkorchid"
   }
   ListElement {
-    name: "Green"
-    colour: "green"
+    name: "darkgreen"
+    colour: "darkgreen"
   }
   ListElement {
-    name: "Lime"
-    colour: "lime"
+    name: "darkslategrey"
+    colour: "darkslategrey"
   }
   ListElement {
-    name: "Blue"
-    colour: "blue"
-  }
-  ListElement {
-    name: "Red"
-    colour: "red"
-  }
-  ListElement {
-    name: "Gray"
-    colour: "gray"
-  }
-  ListElement {
-    name: "Purple"
-    colour: "purple"
-  }
-  ListElement {
-    name: "Green"
-    colour: "green"
-  }
-  ListElement {
-    name: "Lime"
-    colour: "lime"
-  }
-  ListElement {
-    name: "Blue"
-    colour: "blue"
-  }
-  ListElement {
-    name: "Red"
-    colour: "red"
-  }
-  ListElement {
-    name: "Gray"
-    colour: "gray"
-  }
-  ListElement {
-    name: "Purple"
-    colour: "purple"
-  }
-  ListElement {
-    name: "Green"
-    colour: "green"
-  }
-  ListElement {
-    name: "Lime"
-    colour: "lime"
-  }
-  ListElement {
-    name: "Blue"
-    colour: "blue"
-  }
-  ListElement {
-    name: "Red"
-    colour: "red"
-  }
-  ListElement {
-    name: "Gray"
-    colour: "gray"
-  }
-  ListElement {
-    name: "Purple"
-    colour: "purple"
-  }
-  ListElement {
-    name: "Green"
-    colour: "green"
-  }
-  ListElement {
-    name: "Lime"
-    colour: "lime"
+    name: "darkslateblue"
+    colour: "darkslateblue"
   }
 }

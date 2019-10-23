@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,22.10.2019</changed>
+/// <changed>ʆϒʅ,23.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -51,7 +51,7 @@ Item {
     }
 
     // collision animations (animations on fragments shadow and scale)
-    layer.enabled: dirty
+    layer.enabled: true
     layer.effect: DropShadow {
       id: collision
       verticalOffset: 0
@@ -61,8 +61,8 @@ Item {
       PropertyAnimation on samples {
         id: collisionAnimation
         from: 0
-        to: 60
-        duration: 200
+        to: 90
+        duration: 100
         running: dirty
         onStopped: scaleAnimation.start()
       }

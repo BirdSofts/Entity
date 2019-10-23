@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,04.10.2019</created>
-#/ <changed>ʆϒʅ,16.10.2019</changed>
+#/ <changed>ʆϒʅ,23.10.2019</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -42,6 +42,7 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC Qt5::QuickControls2
   PUBLIC libLogic
   PUBLIC libSettings
+  PUBLIC libTale
   )
 
 gtest_discover_tests(${TARGET_NAME} NO_PRETTY_TYPES NO_PRETTY_VALUES)

@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,20.10.2019</changed>
+/// <changed>ʆϒʅ,23.10.2019</changed>
 // *******************************************************************************************
 
 #include <gtest/gtest.h>
@@ -15,6 +15,7 @@
 
 #include "../libLogic/logic.h"
 #include "../libSettings/settings.h"
+#include "../libTale/tale.h"
 
 
 TEST ( Entity, Application_RunInWhole )
@@ -57,6 +58,7 @@ TEST ( Entity, Application_RunInWhole )
   view.rootContext ()->setContextProperty ( "configs", &configs );
 
   GameLogic logic ( &configs, &view );
+  Tale tale ( &logic );
   view.rootContext ()->setContextProperty ( "logic", &logic );
 
   view.setSource ( url );

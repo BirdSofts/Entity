@@ -3,12 +3,12 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,22.10.2019</changed>
+/// <changed>ʆϒʅ,24.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
+import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
-//import QtQuick.Layouts 1.3
 
 
 // page base container
@@ -69,4 +69,67 @@ Item {
     onClicked: settingsShow = true
   }
 
+  // tale area (narrator space)
+  Rectangle {
+    id: rectangle
+    width: parent.width
+    height: 100
+    color: "#00000000"
+    antialiasing: true
+    opacity: 1
+    anchors.bottom: parent.bottom
+    border.color: "yellow"
+    border.width: 1
+
+    // tale area layout container
+    GridLayout {
+      anchors.horizontalCenter: parent.horizontalAlignment
+      width: parent.width
+      height: parent.height
+      rows: 2
+      columns: 1
+
+      Label {
+        id: sentence
+        Layout.row: 0
+        text: "All characters and events of the following game are pure inventions.\n"
+        font.family: "Candara"
+        font.pixelSize: 20
+        color: "black"
+        Layout.fillWidth: true
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.WordWrap
+        leftPadding: 5
+        rightPadding: 5
+      }
+
+      Button {
+        id: gameExit
+        Layout.row: 1
+        background: ThemeButton {}
+        text: qsTr("Exit")
+        font.family: "Candara"
+        font.pixelSize: 20
+        contentItem: Text {
+          // adjustments to button text
+          text: parent.text
+          font: parent.font
+          color: "black"
+          //            opacity: enabled ? 1.0 : 0.3
+          opacity: parent.opacity
+          //            color: parent.down ? "#17a81a" : "#21be2b"
+          horizontalAlignment: Text.AlignLeft
+          verticalAlignment: Text.AlignVCenter
+          elide: Text.ElideRight // omit characters from right (dynamic resizing)
+        }
+        Layout.fillWidth: true
+        padding: 5
+        onClicked: Qt.quit()
+      }
+    }
+  }
+
 }
+
+
