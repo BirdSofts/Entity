@@ -120,15 +120,20 @@ Item {
               {
                 startText.text = "Survive!"
                 start++
+
                 newGameTimer.start()
               }
           startTextAnimation.start()
         } else
         {
+
           start = 1
           startText.text = ""
           startTextAnimation.stop()
           startTextTimer.stop()
+
+          sentence.text = "\n"
+
         }
       }
     }
@@ -144,6 +149,7 @@ Item {
         //                LogicJs.newGame()
         logic.newGame()
         tickTimer.start()
+        sentence.text = "\n"
       }
     }
     Timer {
@@ -248,22 +254,29 @@ Item {
       {
         if (currentScale === 1.0)
         {
+
           enterAnimation.start()
           startTextTimer.start()
           currentScale = 0.3
-          sentence.text = "\n"
+
           sentenceTimer.stop()
+          sentence.text = tale.getTitle()
+
         } else
         {
+
           start = 1
           startText.text = ""
           startTextTimer.stop()
           newGameTimer.stop()
           tickTimer.stop()
+
           exitAnimation.start()
           currentScale = 1.0
+
           sentence.text = "\n"
           sentenceTimer.start()
+
         }
       }
 
@@ -281,7 +294,7 @@ Item {
 
   // tale area (narrator space)
   Rectangle {
-    id: tale
+    id: taleArea
     width: parent.width
     height: 100
     color: "#00000000"
@@ -322,30 +335,7 @@ Item {
           interval: 3000
           running: true
           repeat: true
-          onTriggered: sentence.sentences()
-        }
-
-        function sentences()
-        {
-          if (current === 1)
-          {
-            sentence.text = "Ask and you shall receive...\n"
-            current++
-          } else
-            if(current === 2)
-            {
-              sentence.text = "Expect and you shall persuade...\n"
-              current++
-            } else
-              if(current === 3)
-              {
-                sentence.text = "Deceive and you shall answer...\n"
-                current++
-              } else
-              {
-                sentence.text = "Force and you shall be doomed...\n"
-                current = 1
-              }
+          onTriggered: sentence.text = tale.getNextIdleSentence()
         }
       }
 

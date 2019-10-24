@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,23.10.2019</changed>
+/// <changed>ʆϒʅ,24.10.2019</changed>
 // *******************************************************************************************
 
 #include <gtest/gtest.h>
@@ -57,9 +57,11 @@ TEST ( Entity, Application_RunInWhole )
   Configuration configs ( &view );
   view.rootContext ()->setContextProperty ( "configs", &configs );
 
-  GameLogic logic ( &configs, &view );
-  Tale tale ( &logic );
+  GameLogic logic ( &view, &configs );
   view.rootContext ()->setContextProperty ( "logic", &logic );
+
+  Tale tale ( &logic );
+  view.rootContext ()->setContextProperty ( "tale", &tale );
 
   view.setSource ( url );
 
@@ -84,6 +86,27 @@ TEST ( Entity, libSettings_Instantiation )
 {
   Configuration configs ( nullptr );
   EXPECT_TRUE ( configs.getLoaded () );
+  EXPECT_EQ ( configs.getWidth (), 600 );
+}
+
+TEST ( Entity, libLogic_Instantiation )
+{
+  GameLogic logic ( nullptr, nullptr );
+  EXPECT_TRUE ( logic.isInitialized () );
+}
+
+TEST ( Entity, libSettingsAndlibLogic_Instantiation )
+{
+  Configuration configs ( nullptr );
+  GameLogic logic ( nullptr, &configs );
+  EXPECT_TRUE ( configs.getLoaded () );
+  EXPECT_TRUE ( logic.isInitialized () );
+}
+
+TEST ( Entity, libTale_Instantiation )
+{
+  Tale tale ( nullptr );
+  EXPECT_TRUE ( tale.isInitialized () );
 }
 
 TEST ( Entity, Test_SuccessCase )

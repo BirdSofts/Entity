@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,21.10.2019</created>
-#/ <changed>ʆϒʅ,23.10.2019</changed>
+#/ <changed>ʆϒʅ,24.10.2019</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -36,5 +36,8 @@ endif(WIN32)
 add_library(${TARGET_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${TARGET_NAME}
-  PUBLIC libLogic
+  PUBLIC Qt5::Core
+  PUBLIC Qt5::Gui
+  PUBLIC Qt5::Qml
+  PUBLIC Qt5::Quick
   )

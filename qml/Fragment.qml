@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,23.10.2019</changed>
+/// <changed>ʆϒʅ,24.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -73,6 +73,7 @@ Item {
       to: 0
       duration: 500
       running: false
+      onStopped: { content.visible = false; content.layer.enabled = false }
     }
   }
 
