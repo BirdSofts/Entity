@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,27.10.2019</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -18,10 +18,10 @@
 
 
 GameLogic::GameLogic ( QQuickView* viewObj, Configuration* configsObj )
-  : view ( viewObj ), component ( nullptr ), configs ( configsObj ),
+  : view ( viewObj ), canvas ( nullptr ), component ( nullptr ), configs ( configsObj ),
   gaming ( false ), initialized ( false )
 {
-
+  //RockAndRoll
   if (configs)
   {
     viewWidth = configs->getWidth ();
@@ -37,7 +37,7 @@ GameLogic::GameLogic ( QQuickView* viewObj, Configuration* configsObj )
   fragments = nullptr;
   itemSize = 0;
   states = nullptr;
-  count = 40;
+  count = 20;
 
   initialized = true;
 
@@ -93,10 +93,10 @@ void GameLogic::createItem ( unsigned short index )
       fragments [index]->setParent ( view->rootObject () );
       fragments [index]->setVisible ( true );
 
-      QObject* temp = view->findChild<QObject*> ( "gameCanvas" );
-      if (temp)
+      if (canvas)
       {
-        fragments [index]->setParentItem ( qobject_cast<QQuickItem*> (temp) );
+
+        fragments [index]->setParentItem ( qobject_cast<QQuickItem*> (canvas) );
 
         states [index].type = qFloor ( qRand.generateDouble () * 8 ) + 1;
         fragments [index]->setProperty ( "type", states [index].type );
@@ -113,8 +113,6 @@ void GameLogic::createItem ( unsigned short index )
 
           states [index].x = 1;
           states [index].y = qFloor ( dis ( gen ) * viewHeight ) + 1;
-          fragments [index]->setProperty ( "x", states [index].x );
-          fragments [index]->setProperty ( "y", states [index].y );
         } else
 
           if (sphere > 50 && sphere <= 100)
@@ -123,8 +121,6 @@ void GameLogic::createItem ( unsigned short index )
 
             states [index].x = qFloor ( dis ( gen ) * viewWidth ) + 1;
             states [index].y = 1;
-            fragments [index]->setProperty ( "x", states [index].x );
-            fragments [index]->setProperty ( "y", states [index].y );
           } else
 
             if (sphere > 100 && sphere <= 150)
@@ -133,8 +129,6 @@ void GameLogic::createItem ( unsigned short index )
 
               states [index].x = viewWidth - 1;
               states [index].y = qFloor ( dis ( gen ) * viewHeight - 1 );
-              fragments [index]->setProperty ( "x", states [index].x );
-              fragments [index]->setProperty ( "y", states [index].y );
             } else
 
               if (sphere > 150 && sphere <= 200)
@@ -143,13 +137,15 @@ void GameLogic::createItem ( unsigned short index )
 
                 states [index].x = qFloor ( dis ( gen ) * viewWidth - 1 );
                 states [index].y = viewHeight - 1;
-                fragments [index]->setProperty ( "x", states [index].x );
-                fragments [index]->setProperty ( "y", states [index].y );
               }
 
-            itemSize = temp->property ( "itemSize" ).toInt ();
+            fragments [index]->setProperty ( "x", states [index].x );
+            fragments [index]->setProperty ( "y", states [index].y );
+
+            itemSize = canvas->property ( "itemSize" ).toInt ();
             fragments [index]->setProperty ( "width", itemSize );
             fragments [index]->setProperty ( "height", itemSize );
+
       } else
       {
         // Todo: logger service invoker
@@ -197,10 +193,16 @@ bool const GameLogic::isGaming ( void )
 };
 
 
+void GameLogic::initializeGame ( QString gameState )
+{
+  //canvas->property("")
+};
+
+
 void GameLogic::newGame ( void )
 {
 
-  QObject* canvas = view->findChild<QObject*> ( "gameCanvas" );
+  canvas = view->findChild<QObject*> ( "gameCanvas" );
   canvas->setProperty ( "health", health );
 
   fragments = new (std::nothrow) QQuickItem * [count];

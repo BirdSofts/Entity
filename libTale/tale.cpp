@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,21.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,27.10.2019</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -17,26 +17,29 @@ Tale::Tale ( GameLogic* logicObj )
   : logic ( logicObj ), initialized ( false )
 {
 
-  title = "A funny Business\n";
+  title = "A funny Business";
 
-  idleSentences [0] = "Ask and you shall receive...\n";
-  idleSentences [1] = "Expect and you shall persuade...\n";
-  idleSentences [2] = "Deceive and you shall answer...\n";
-  idleSentences [3] = "Force and you shall be doomed...\n";
+  idleSentences [0] = "Ask and you shall receive...";
+  idleSentences [1] = "Expect and you shall persuade...";
+  idleSentences [2] = "Deceive and you shall answer...";
+  idleSentences [3] = "Force and you shall be doomed...";
   idleSentenceIndex = 0;
 
-  taleSentences [0] = "The movement is that essence, to survive with, while asking and hoping!";
-  taleSentences [1] = "In the day or at night, this fact may shine bright...\n";
-  taleSentences [2] = "In the stand still of time, alone you will drum...\n";
-  taleSentences [3] = "The last sentence of the last player was...";
-  taleSentences [4] = "Come on, I am just a different colour!\n";
-  taleSentences [5] = "How unconventional you can move?!\n";
-  taleSentences [6] = "How strange you might find this world?!\n";
-  taleSentences [7] = "How curious will be your received packages!\n";
-  taleSentences [8] = "Will you be able to solve and survive?!\n";
-  taleSentences [9] = "In a survival environment, where expectations are secure-zipped, the wish for guidance my be with you!";
-  taleSentences [10] = "The first tester of the game got blessed by God and is still alive!\n";
-  taleSentences [11] = "To quote the famous Mr. Spock: \"Live long an prosper.\"\n";
+  taleSentences.insert ( 0, "The movement is that essence, to survive with," );
+  taleSentences.insert ( 1, "while asking and hoping!" );
+  taleSentences.insert ( 2, "In the day or at night, this fact may shine bright..." );
+  taleSentences.insert ( 3, "In the stand still of time, alone you will drum..." );
+  taleSentences.insert ( 4, "The last sentence of the last player was:" );
+  taleSentences.insert ( 5, "\"Come on, I am just a different colour!\"" );
+  taleSentences.insert ( 6, "How unconventional you can move?!" );
+  taleSentences.insert ( 7, "How strange you might find this world?!" );
+  taleSentences.insert ( 8, "How curious will be your received packages!" );
+  taleSentences.insert ( 9, "Will you be able to solve and survive?!" );
+  taleSentences.insert ( 10, "In a survival environment," );
+  taleSentences.insert ( 11, "where expectations are secure-zipped," );
+  taleSentences.insert ( 12, "the wish for guidance my be with you!" );
+  taleSentences.insert ( 13, "The player before you got blessed by God and is still alive!" );
+  taleSentences.insert ( 14, "To quote the famous Mr. Spock: \"Live long an prosper!\"" );
   taleSentenceIndex = 0;
 
   movementSentences [0] = "I see what you are getting at...";
@@ -103,17 +106,19 @@ QString const Tale::getNextIdleSentence ( void )
 };
 
 
-Q_INVOKABLE QString const Tale::getNextTaleSentence ( void )
+QVariantList Tale::getTaleSentences ( void )
 {
-  QString temp = taleSentences [taleSentenceIndex];
-  taleSentenceIndex++;
-  if (taleSentenceIndex == 12)
-    taleSentenceIndex = 0;
-  return temp;
+  return taleSentences;
 };
 
 
-Q_INVOKABLE QString const Tale::getMovementSentence ( void )
+void Tale::resetTaleSentenceIndex ( void )
+{
+  taleSentenceIndex = 0;
+};
+
+
+QString const Tale::getMovementSentence ( void )
 {
   if (logic->move ())
   {
@@ -127,7 +132,7 @@ Q_INVOKABLE QString const Tale::getMovementSentence ( void )
 };
 
 
-Q_INVOKABLE QString const Tale::getCollisionSentence ( void )
+QString const Tale::getCollisionSentence ( void )
 {
 
   // random functionality seed provider

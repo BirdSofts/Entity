@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,27.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -31,47 +31,115 @@ Item {
   property string fontName: ""
   property string colour: ""
 
-  property int start: 1 // new game state controler
+  // game play properties
+  property int start: 1 // new game welcome text controller
+  property bool quitter: false // to break the game play procedure correctly
 
-  property int current: 1 // current idle sentence controler
+  // sentences' controller properties
+  property int current: sentencesFieldOne.current
+  property int count: sentencesFieldOne.count
+
+
+  // game flow function
+  function gamePlay(response)
+  {
+    if (response === "NotInitialized")
+    {
+
+      quitter = false
+
+      welcomeText.visible = true
+      welcomeTextTimer.start()
+      smily.scale = 0.5
+
+      sentencesFieldOneTimer.stop()
+
+      sentencesFieldOne.proceed = false
+      sentencesFieldOne.feed = [tale.getTitle()]
+      sentencesFieldOne.proceed = true
+
+    } else
+
+      if (response === "Welcomed" && !quitter)
+      {
+
+        gameExitButton.visible = false
+        taleArea.height = 500
+
+        sentencesFieldOne.proceed = false
+        sentencesFieldOne.feed = tale.getTaleSentences()
+        sentencesFieldOne.loop = false
+        sentencesFieldOne.proceed = true
+
+        newGameTimer.start()
+
+      } else
+
+        if (response === "Quitted")
+        {
+
+          // guide: Nerd Snow's saying: a quitter is never going to be the same size as of the past!
+          if(!quitter)
+            smily.scale = 1.0
+
+          welcomeText.visible = true
+
+          if(tickTimer.running)
+          {
+            tickTimer.stop()
+            //          LogicJs.endGame()
+            logic.endGame()
+          }
+
+          taleArea.height = 100
+          gameExitButton.visible = true
+          sentencesFieldOne.proceed = false
+          sentencesFieldOne.feed = ["This one build itself on its own! :)"]
+          sentencesFieldOne.loop = true
+          sentencesFieldOne.proceed = true
+          sentencesFieldOneTimer.start()
+
+        }
+  }
+
 
   Item {
-    id: draggable
+    id: draggableArea
     width: parent.width
     height: parent.height - 100
 
 
     // introduction Text (Entity word containing a twin of animations)
     Label {
-      id: entityText
+      id: gameTitle
       text: qsTr("Entity")
-      color: "darkBlue"
+      color: "dodgerblue"
       y: parent.y + 10
       anchors.horizontalCenter: parent.horizontalCenter
       font.pointSize: 12
       font.bold: true
 
-      // entity text pair animations
+      // game title pair animations
       PropertyAnimation on font.letterSpacing {
-        id: textExpandAnimation
+        id: gameTitleExpandAnimation
         from: 0
         to: 8
         duration: 1000
-        onFinished: textShrinkAnimation.start()
+        onFinished: gameTitleShrinkAnimation.start()
       }
       PropertyAnimation on font.letterSpacing {
-        id: textShrinkAnimation
+        id: gameTitleShrinkAnimation
         from: 8
         to: 0
         duration: 1000
-        onFinished: textExpandAnimation.start()
+        onFinished: gameTitleExpandAnimation.start()
       }
     }
 
 
     // game's start procedure (countdown timer + trigger of new game's timer)
     Label {
-      id: startText
+      id: welcomeText
       text: "Welcome to the world of entity! :|"
       color: "red"
       y: parent.y + 80
@@ -79,60 +147,60 @@ Item {
       font.pointSize: 12
       font.bold: true
       scale: 1
+      visible: true
 
       // start text animation
       PropertyAnimation on scale {
-        id: startTextAnimation
+        id: welcomeTextAnimation
         from: 1
         to: 3
         duration: 300
         running: false
+        loops: 1
       }
 
       // start text timer functionality
       Timer {
-        id: startTextTimer
+        id: welcomeTextTimer
         interval: 500
         running: false
         repeat: true
-        onTriggered: startText.startGame()
+        onTriggered: welcomeText.welcoming()
       }
-      function startGame()
+      function welcoming()
       {
-        //          startTextAnimation.stop()
         if (start <= 4)
         {
           if (start === 1)
           {
-            startText.text = "3"
+            welcomeText.text = "3"
             start++
           } else
             if (start === 2)
             {
-              startText.text = "2"
+              welcomeText.text = "2"
               start++
             } else
               if (start === 3)
               {
-                startText.text = "1"
+                welcomeText.text = "1"
                 start++
               } else
               {
-                startText.text = "Survive!"
+                welcomeText.text = "Survive!"
                 start++
-
-                newGameTimer.start()
               }
-          startTextAnimation.start()
+          welcomeTextAnimation.start()
         } else
         {
 
           start = 1
-          startText.text = ""
-          startTextAnimation.stop()
-          startTextTimer.stop()
+          welcomeTextTimer.stop()
+          welcomeText.visible = false
+          welcomeText.scale = 1
+          welcomeText.text = "Welcome to the world of entity! :|"
 
-          sentence.text = "\n"
+          gamePlay("Welcomed")
 
         }
       }
@@ -142,14 +210,23 @@ Item {
     // game's timers (game's logic)
     Timer {
       id: newGameTimer
-      interval: 2000
+      interval: 3000
       running: false
-      repeat: false
+      repeat: true
       onTriggered: {
-        //                LogicJs.newGame()
-        logic.newGame()
-        tickTimer.start()
-        sentence.text = "\n"
+        if(!tickTimer.running && current === count && !quitter)
+        {
+          //                LogicJs.newGame()
+          logic.newGame()
+          tickTimer.start()
+
+          taleArea.height = 100
+          gameExitButton.visible = true
+          sentencesFieldOne.proceed = false
+          sentencesFieldOne.feed = [""]
+          sentencesFieldOne.loop = true
+          sentencesFieldOne.proceed = true
+        }
       }
     }
     Timer {
@@ -173,9 +250,6 @@ Item {
       Drag.active: smilyDragArea.drag.active
       scale: 1.0
       antialiasing: true
-
-      // smily scale
-      property real currentScale: 1.0
 
       // drawing properties of smily
       //    property color fillStyle: "#900808FF" // ARGB
@@ -212,74 +286,23 @@ Item {
         context.restore()
       }
 
-      // draggable
+      // drag functionality provider
       MouseArea {
         id: smilyDragArea
         anchors.fill: parent
         drag.target: parent
         drag.smoothed: false
-        drag.minimumX: draggable.x
-        drag.minimumY: draggable.y
-        drag.maximumX: draggable.width - 100
-        drag.maximumY: draggable.height - 100
-        onPressedChanged: smily.caller()
-
+        drag.minimumX: draggableArea.x
+        drag.minimumY: draggableArea.y
+        drag.maximumX: draggableArea.width - 100
+        drag.maximumY: draggableArea.height - 100
+        onPressed: gamePlay("NotInitialized")
         onReleased: {
-          if (logic.isGaming())
-          {
-            //          LogicJs.endGame()
-            logic.endGame()
-          }
+          if(!logic.isGaming())
+            quitter = true
+          gamePlay("Quitted")
         }
       }
-
-      // smily pair animations
-      PropertyAnimation on scale {
-        id: enterAnimation
-        from: 1.0
-        to: 0.5
-        duration: 500
-        running: false
-      }
-      PropertyAnimation on scale {
-        id: exitAnimation
-        from: 0.5
-        to: 1.0
-        duration: 500
-        running: false
-      }
-
-      // smily animations caller function
-      function caller()
-      {
-        if (currentScale === 1.0)
-        {
-
-          enterAnimation.start()
-          startTextTimer.start()
-          currentScale = 0.3
-
-          sentenceTimer.stop()
-          sentence.text = tale.getTitle()
-
-        } else
-        {
-
-          start = 1
-          startText.text = ""
-          startTextTimer.stop()
-          newGameTimer.stop()
-          tickTimer.stop()
-
-          exitAnimation.start()
-          currentScale = 1.0
-
-          sentence.text = "\n"
-          sentenceTimer.start()
-
-        }
-      }
-
       onXChanged: {
         logic.update("smily", x, y)
         //      console.log("X changed:", x)
@@ -287,6 +310,13 @@ Item {
       onYChanged: {
         logic.update("smily", x, y)
         //      console.log("Y changed:", y)
+      }
+
+      // smily scale animation
+      Behavior on scale {  NumberAnimation {
+          duration: 500
+          running: false
+        }
       }
     }
   }
@@ -306,7 +336,7 @@ Item {
 
     // tale area layout container
     GridLayout {
-      id: taleGrid
+      id: taleAreaGrid
       anchors.horizontalCenter: parent.horizontalAlignment
       width: parent.width
       height: parent.height
@@ -315,34 +345,40 @@ Item {
       columnSpacing: 0
       rowSpacing: 0
 
-      // idle sentences
-      Label {
-        id: sentence
-        Layout.row: 0
-        text: "This one build itself on its own! :)\n"
-        font.family: "Candara"
-        font.pixelSize: 20
-        color: "black"
-        Layout.fillWidth: true
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.WordWrap
-        leftPadding: 5
-        rightPadding: 5
 
+      RockAndRoll {
+        id: sentencesFieldOne
+        feed: ["This one build itself on its own! :)"]
+        Layout.row: 0
+        scaleEnabled: true
+        proceed: true
+        loop: true
         Timer {
-          id: sentenceTimer
-          interval: 3000
+          id: sentencesFieldOneTimer
+          interval: 4000
           running: true
           repeat: true
-          onTriggered: sentence.text = tale.getNextIdleSentence()
+          onTriggered: {
+            sentencesFieldOne.proceed = false
+            sentencesFieldOne.feed = [tale.getNextIdleSentence()]
+            sentencesFieldOne.proceed = true
+          }
         }
       }
+      RockAndRoll {
+        id: sentencesFieldTwo
+        feed: [""]
+        Layout.row: 1
+        scaleEnabled: true
+        proceed: false
+        loop: false
+      }
+
 
       // exit button
       Button {
-        id: gameExit
-        Layout.row: 1
+        id: gameExitButton
+        Layout.row: 2
         background: ThemeButton {}
         text: qsTr("Return")
         font.family: "Candara"

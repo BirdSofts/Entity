@@ -7,6 +7,7 @@
         <file>qml/First.qml</file>
         <file>qml/Fragment.qml</file>
         <file>qml/Game.qml</file>
+        <file>qml/RockAndRoll.qml</file>
         <file>qml/ThemeButton.qml</file>
         <file>qml/ThemeItem.qml</file>
     </qresource>

@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,27.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -89,24 +89,24 @@ Item {
       rows: 2
       columns: 1
 
-      Label {
-        id: sentence
+      RockAndRoll {
+        feed: ["All characters and events of the following game are pure inventions.", ""]
         Layout.row: 0
-        text: "All characters and events of the following game are pure inventions.\n"
-        font.family: "Candara"
-        font.pixelSize: 20
-        color: "black"
-        Layout.fillWidth: true
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.WordWrap
-        leftPadding: 5
-        rightPadding: 5
+        scaleEnabled: false
+        proceed: true
+        loop: true
+      }
+      RockAndRoll {
+        feed: [""]
+        Layout.row: 1
+        scaleEnabled: false
+        proceed: false
+        loop: false
       }
 
       Button {
         id: gameExit
-        Layout.row: 1
+        Layout.row: 2
         background: ThemeButton {}
         text: qsTr("Exit")
         font.family: "Candara"
@@ -131,5 +131,3 @@ Item {
   }
 
 }
-
-

@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,21.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,27.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef TALE_H
@@ -29,7 +29,7 @@ private:
   QString idleSentences [4]; // idle state sentences
   unsigned short idleSentenceIndex; // current idle state sentence
 
-  QString taleSentences [12]; // the story sentences
+  QVariantList taleSentences; // the story sentences
   unsigned short taleSentenceIndex; // current story sentence
 
   QString movementSentences [10]; // movement sentences
@@ -44,7 +44,8 @@ public:
   Q_INVOKABLE bool const isInitialized ( void ); // get initialization state
   Q_INVOKABLE QString const getTitle ( void ); // get story's title from first hand handler! :)
   Q_INVOKABLE QString const getNextIdleSentence ( void ); // purposeful even in idle state! :)
-  Q_INVOKABLE QString const getNextTaleSentence ( void ); // story teller
+  Q_INVOKABLE QVariantList getTaleSentences ( void ); // story teller
+  Q_INVOKABLE void resetTaleSentenceIndex ( void ); // to reset tale sentences index
   Q_INVOKABLE QString const getMovementSentence ( void ); // movement comedian
   Q_INVOKABLE QString const getCollisionSentence ( void ); // collision comedian
 };

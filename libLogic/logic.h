@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,27.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef LOGIC_H
@@ -47,7 +47,8 @@ class GameLogic : public QQuickItem
   Q_OBJECT
 private:
   QQuickView* view; // pointer to QtQml application view (application engine)
-  QQmlComponent* component; // pointer to QtQml fragments component
+  QObject* canvas; // pointer to game's canvas component
+  QQmlComponent* component; // pointer to game's fragments component
 
   Configuration* configs; // pointer to application configuration
   unsigned short viewWidth; // screen width (prevents constant function calls)
@@ -78,7 +79,8 @@ public:
   Fragment* const getStates ( void );
 
   Q_INVOKABLE bool const isInitialized ( void ); // get initialization state
-  Q_INVOKABLE bool const isGaming ( void ); // currently gaiming
+  Q_INVOKABLE bool const isGaming ( void ); // currently gaming
+  Q_INVOKABLE void initializeGame ( QString ); // game play initialization
   Q_INVOKABLE void newGame ( void ); // new game starter
   Q_INVOKABLE void tick ( void ); // game's timer ticker / game universe updater
   Q_INVOKABLE void update ( QString, int, int ); // user input updater / updates initiator
