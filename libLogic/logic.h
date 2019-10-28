@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,27.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef LOGIC_H
@@ -20,6 +20,7 @@
 
 // need to be provided through a smart pointer but for the time being:
 #include "..\libSettings\settings.h"
+#include "..\libTale\tale.h"
 
 
 // entity's most needed properties container
@@ -37,6 +38,7 @@ struct Fragment
   int x;
   int y;
   int type;
+  bool dirty;
   bool onBusiness;
 };
 
@@ -54,33 +56,34 @@ private:
   unsigned short viewWidth; // screen width (prevents constant function calls)
   unsigned short viewHeight; // screen height (prevents constant function calls)
 
+  Tale* tale; // pointer to game's story
+
   Smily player; // represents entity properties
-  bool moved; // true if player changed position
-  QQuickItem* playerObj; // represents entity object
+  unsigned short moves; // player changed positions counter
+  QQuickItem* playerObj; // pointer to entity object
   unsigned short health; // entity's health
-  QQuickItem** fragments; // collision seekers container
+  QQuickItem** fragments; // pointers to collision seekers (fragments)
   int itemSize; // fragments' width/height
   Fragment* states; // collision seekers state container
   unsigned short count; // fragment's count
   unsigned short collidedIndex; // index of last involved in a collision fragment
+  QQuickItem* sentencesFieldOne; // pointer sentences (field one)
+  QQuickItem* sentencesFieldTwo; // pointer sentences (field two)
 
+  bool onDetection;
   bool gaming;
   //bool paused; // +smily animation
 
+  bool initialized; // true in case of successful initialization
+
   void createItem ( unsigned short ); // fragments instantiation
   void collision ( void ); // collisions detector / responder
-
-  bool initialized; // true in case of successful initialization
 public:
-
-  GameLogic ( QQuickView*, Configuration* );
+  GameLogic ( QQuickView*, Configuration*, Tale* );
   //~GameLogic ( void );
-  bool& move ( void );
-  Fragment* const getStates ( void );
-
   Q_INVOKABLE bool const isInitialized ( void ); // get initialization state
   Q_INVOKABLE bool const isGaming ( void ); // currently gaming
-  Q_INVOKABLE void initializeGame ( QString ); // game play initialization
+  Q_INVOKABLE void initializeGame ( QString ); // game's different states initializer
   Q_INVOKABLE void newGame ( void ); // new game starter
   Q_INVOKABLE void tick ( void ); // game's timer ticker / game universe updater
   Q_INVOKABLE void update ( QString, int, int ); // user input updater / updates initiator
@@ -89,4 +92,3 @@ public:
 
 
 #endif // !LOGIC_H
-// todo set get paused   get pointer to player    get type of last collided one

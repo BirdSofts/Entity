@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,27.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -40,71 +40,9 @@ Item {
   property int count: sentencesFieldOne.count
 
 
-  // game flow function
-  function gamePlay(response)
-  {
-    if (response === "NotInitialized")
-    {
-
-      quitter = false
-
-      welcomeText.visible = true
-      welcomeTextTimer.start()
-      smily.scale = 0.5
-
-      sentencesFieldOneTimer.stop()
-
-      sentencesFieldOne.proceed = false
-      sentencesFieldOne.feed = [tale.getTitle()]
-      sentencesFieldOne.proceed = true
-
-    } else
-
-      if (response === "Welcomed" && !quitter)
-      {
-
-        gameExitButton.visible = false
-        taleArea.height = 500
-
-        sentencesFieldOne.proceed = false
-        sentencesFieldOne.feed = tale.getTaleSentences()
-        sentencesFieldOne.loop = false
-        sentencesFieldOne.proceed = true
-
-        newGameTimer.start()
-
-      } else
-
-        if (response === "Quitted")
-        {
-
-          // guide: Nerd Snow's saying: a quitter is never going to be the same size as of the past!
-          if(!quitter)
-            smily.scale = 1.0
-
-          welcomeText.visible = true
-
-          if(tickTimer.running)
-          {
-            tickTimer.stop()
-            //          LogicJs.endGame()
-            logic.endGame()
-          }
-
-          taleArea.height = 100
-          gameExitButton.visible = true
-          sentencesFieldOne.proceed = false
-          sentencesFieldOne.feed = ["This one build itself on its own! :)"]
-          sentencesFieldOne.loop = true
-          sentencesFieldOne.proceed = true
-          sentencesFieldOneTimer.start()
-
-        }
-  }
-
-
   Item {
     id: draggableArea
+    objectName: "draggableArea"
     width: parent.width
     height: parent.height - 100
 
@@ -140,6 +78,7 @@ Item {
     // game's start procedure (countdown timer + trigger of new game's timer)
     Label {
       id: welcomeText
+      objectName: "welcomeText"
       text: "Welcome to the world of entity! :|"
       color: "red"
       y: parent.y + 80
@@ -162,6 +101,7 @@ Item {
       // start text timer functionality
       Timer {
         id: welcomeTextTimer
+        objectName: "welcomeTextTimer"
         interval: 500
         running: false
         repeat: true
@@ -200,7 +140,8 @@ Item {
           welcomeText.scale = 1
           welcomeText.text = "Welcome to the world of entity! :|"
 
-          gamePlay("Welcomed")
+          //          LogicJs.initializeGame("Welcomed")
+          logic.initializeGame("Welcomed")
 
         }
       }
@@ -210,6 +151,7 @@ Item {
     // game's timers (game's logic)
     Timer {
       id: newGameTimer
+      objectName: "newGameTimer"
       interval: 3000
       running: false
       repeat: true
@@ -231,6 +173,7 @@ Item {
     }
     Timer {
       id: tickTimer
+      objectName: "tickTimer"
       interval: 1
       running: false
       repeat: true
@@ -295,12 +238,15 @@ Item {
         drag.minimumX: draggableArea.x
         drag.minimumY: draggableArea.y
         drag.maximumX: draggableArea.width - 100
-        drag.maximumY: draggableArea.height - 100
-        onPressed: gamePlay("NotInitialized")
+        drag.maximumY: draggableArea.height - 140
+        //        onDoubleClicked: logic.initializeGame("NotInitialized") // for debug purposes
+        //                onPressed: LogicJs.initializeGame("NotInitialized")
+        onPressed: logic.initializeGame("NotInitialized")
         onReleased: {
           if(!logic.isGaming())
             quitter = true
-          gamePlay("Quitted")
+          //          LogicJs.initializeGame("Quitted")
+          logic.initializeGame("Quitted")
         }
       }
       onXChanged: {
@@ -325,12 +271,14 @@ Item {
   // tale area (narrator space)
   Rectangle {
     id: taleArea
+    objectName: "taleArea"
     width: parent.width
     height: 100
     color: "#00000000"
     antialiasing: true
     opacity: 1
     anchors.bottom: parent.bottom
+    anchors.bottomMargin: 40
     border.color: "yellow"
     border.width: 1
 
@@ -348,6 +296,7 @@ Item {
 
       RockAndRoll {
         id: sentencesFieldOne
+        objectName: "sentencesFieldOne"
         feed: ["This one build itself on its own! :)"]
         Layout.row: 0
         scaleEnabled: true
@@ -355,6 +304,7 @@ Item {
         loop: true
         Timer {
           id: sentencesFieldOneTimer
+          objectName: "sentencesFieldOneTimer"
           interval: 4000
           running: true
           repeat: true
@@ -367,6 +317,7 @@ Item {
       }
       RockAndRoll {
         id: sentencesFieldTwo
+        objectName: "sentencesFieldTwo"
         feed: [""]
         Layout.row: 1
         scaleEnabled: true
@@ -378,6 +329,7 @@ Item {
       // exit button
       Button {
         id: gameExitButton
+        objectName: "gameExitButton"
         Layout.row: 2
         background: ThemeButton {}
         text: qsTr("Return")
@@ -402,4 +354,16 @@ Item {
     }
   }
 
+
+  // copyright statement
+  Label {
+    id: copyright
+    background: ThemeItem { opacity: 0.0 }
+    text: qsTr("©: ʆϒʅ")
+    font.pointSize: 13
+    font.family: fontName
+    padding: 5
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+  }
 }

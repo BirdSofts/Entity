@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,27.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -22,6 +22,7 @@ Item {
   property int fontSize: 0
   property string fontName: ""
   property string colour: ""
+
 
   Button {
     id: gameStarter
@@ -46,6 +47,7 @@ Item {
     onClicked: gameStarted = true
   }
 
+
   Button {
     id: settingsShower
     background: ThemeButton {}
@@ -69,6 +71,7 @@ Item {
     onClicked: settingsShow = true
   }
 
+
   // tale area (narrator space)
   Rectangle {
     id: rectangle
@@ -78,6 +81,7 @@ Item {
     antialiasing: true
     opacity: 1
     anchors.bottom: parent.bottom
+    anchors.bottomMargin: 40
     border.color: "yellow"
     border.width: 1
 
@@ -88,9 +92,11 @@ Item {
       height: parent.height
       rows: 2
       columns: 1
+      columnSpacing: 0
+      rowSpacing: 0
 
       RockAndRoll {
-        feed: ["All characters and events of the following game are pure inventions.", ""]
+        feed: ["All the characters and events of the following game", "are pure inventions."]
         Layout.row: 0
         scaleEnabled: false
         proceed: true
@@ -130,4 +136,16 @@ Item {
     }
   }
 
+
+  // copyright statement
+  Label {
+    id: copyright
+    background: ThemeItem { opacity: 0.0 }
+    text: qsTr("©: ʆϒʅ")
+    font.pointSize: 13
+    font.family: fontName
+    padding: 5
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+  }
 }

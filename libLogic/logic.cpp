@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,27.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -14,23 +14,24 @@
 #include <qrandom.h>
 //#include <qstring.h>
 
-#include "../libLogic/logic.h"
+#include "logic.h"
 
 
-GameLogic::GameLogic ( QQuickView* viewObj, Configuration* configsObj )
-  : view ( viewObj ), canvas ( nullptr ), component ( nullptr ), configs ( configsObj ),
-  gaming ( false ), initialized ( false )
+GameLogic::GameLogic ( QQuickView* viewObj, Configuration* configsObj, Tale* taleObj )
+  : view ( viewObj ), canvas ( nullptr ), component ( nullptr ),
+  configs ( configsObj ), tale ( taleObj ),
+  onDetection ( false ), gaming ( false ), initialized ( false )
 {
-  //RockAndRoll
+
   if (configs)
   {
     viewWidth = configs->getWidth ();
-    viewHeight = configs->getHeight () - 100;
+    viewHeight = configs->getHeight () - 140;
   }
 
   player.x = 0;
   player.y = 0;
-  moved = false;
+  moves = 0;
   playerObj = nullptr;
   health = 3;
 
@@ -38,6 +39,10 @@ GameLogic::GameLogic ( QQuickView* viewObj, Configuration* configsObj )
   itemSize = 0;
   states = nullptr;
   count = 20;
+  collidedIndex = 0;
+
+  sentencesFieldOne = nullptr;
+  sentencesFieldTwo = nullptr;
 
   initialized = true;
 
@@ -48,18 +53,6 @@ GameLogic::GameLogic ( QQuickView* viewObj, Configuration* configsObj )
 //{
 //
 //};
-
-
-bool& GameLogic::move ()
-{
-  return moved;
-};
-
-
-Fragment* const GameLogic::getStates ( void )
-{
-  return &states [collidedIndex];
-};
 
 
 bool const GameLogic::isInitialized ( void )
@@ -176,11 +169,42 @@ void GameLogic::collision ( void )
       if ((states [i].x + itemSize - 5 >= player.x + 25)
            && (states [i].x + itemSize - 5 <= player.x + 75)
            && (states [i].y + itemSize - 5 >= player.y + 25)
-           && (states [i].y + itemSize - 5 <= player.y + 75))
+           && (states [i].y + itemSize - 5 <= player.y + 75)
+           && !onDetection
+           && !states [i].dirty)
       {
+        onDetection = true;
+        states [i].dirty = true;
         fragments [i]->setProperty ( "dirty", true );
         collidedIndex = i;
+
+        if (!canvas)
+        {
+          canvas = view->findChild<QObject*> ( "gameCanvas" );
+
+          if (!canvas)
+            return;
+        }
+
+        if (!sentencesFieldOne)
+        {
+          sentencesFieldOne = view->findChild<QQuickItem*> ( "sentencesFieldOne" );
+
+          if (!sentencesFieldOne)
+            return;
+        }
+
+        sentencesFieldOne->setProperty ( "proceed", false );
+
+        QVariantList temp;
+        QString str { tale->getCollisionSentence ( states [i].type ) };
+        temp.insert ( 0, str );
+
+        sentencesFieldOne->setProperty ( "feed", temp );
+        sentencesFieldOne->setProperty ( "proceed", true );
+        onDetection = false;
       }
+
     }
   }
 
@@ -193,16 +217,156 @@ bool const GameLogic::isGaming ( void )
 };
 
 
-void GameLogic::initializeGame ( QString gameState )
+void GameLogic::initializeGame ( QString response )
 {
-  //canvas->property("")
+
+  QObject* obj { nullptr };
+  QObject* objChild { nullptr };
+
+  if (response == "NotInitialized")
+  {
+
+    if (!canvas)
+    {
+      canvas = view->findChild<QObject*> ( "gameCanvas" );
+
+      if (!canvas)
+        return;
+    }
+
+    if (!playerObj)
+    {
+      playerObj = canvas->findChild<QQuickItem*> ( "smily" );
+    }
+
+    if (!sentencesFieldOne)
+    {
+      sentencesFieldOne = view->findChild<QQuickItem*> ( "sentencesFieldOne" );
+
+      if (!sentencesFieldOne)
+        return;
+    }
+
+    if (!sentencesFieldTwo)
+    {
+      sentencesFieldTwo = view->findChild<QQuickItem*> ( "sentencesFieldTwo" );
+
+      if (!sentencesFieldTwo)
+        return;
+    }
+
+    canvas->setProperty ( "quitter", false );
+
+    obj = canvas->findChild<QObject*> ( "welcomeText" );
+    obj->setProperty ( "visible", true );
+    objChild = obj->findChild<QObject*> ( "welcomeTextTimer" );
+    objChild->setProperty ( "running", true );
+
+    objChild = nullptr;
+    obj = nullptr;
+
+    playerObj->setProperty ( "scale", 0.5 );
+
+    sentencesFieldOne->setProperty ( "proceed", false );
+    QVariantList temp;
+    temp.insert ( 0, tale->getTitle () );
+    sentencesFieldOne->setProperty ( "feed", temp );
+    sentencesFieldOne->setProperty ( "proceed", true );
+
+  } else
+
+    if (response == "Welcomed" && !canvas->property ( "quitter" ).toBool ())
+    {
+
+      obj = canvas->findChild<QObject*> ( "gameExitButton" );
+      obj->setProperty ( "visible", false );
+
+      obj = nullptr;
+
+      obj = canvas->findChild<QObject*> ( "taleArea" );
+      obj->setProperty ( "height", 500 );
+
+      obj = nullptr;
+
+      obj = sentencesFieldOne->findChild<QObject*> ( "sentencesFieldOneTimer" );
+      obj->setProperty ( "running", false );
+      sentencesFieldOne->setProperty ( "proceed", false );
+      sentencesFieldOne->setProperty ( "feed", tale->getTaleSentences () );
+      sentencesFieldOne->setProperty ( "loop", false );
+      sentencesFieldOne->setProperty ( "proceed", true );
+
+      obj = nullptr;
+
+      obj = canvas->findChild<QObject*> ( "newGameTimer" );
+      obj->setProperty ( "running", true );
+
+      obj = nullptr;
+
+    } else
+
+      if (response == "Quitted")
+      {
+
+        // guide: Nerd Snow's saying: a quitter is never going to be the same size as of the past!
+        if (!canvas->property ( "quitter" ).toBool ())
+          playerObj->setProperty ( "scale", 1.0 );
+
+        obj = canvas->findChild<QObject*> ( "welcomeText" );
+        obj->setProperty ( "visible", true );
+
+        obj = nullptr;
+
+        obj = canvas->findChild<QObject*> ( "tickTimer" );
+        if (obj->property ( "running" ).toBool ())
+        {
+          obj->setProperty ( "running", false );
+          endGame ();
+        }
+
+        obj = nullptr;
+
+        obj = canvas->findChild<QObject*> ( "taleArea" );
+        obj->setProperty ( "height", 100 );
+
+        objChild = obj->findChild<QObject*> ( "gameExitButton" );
+        obj->setProperty ( "visible", true );
+
+        objChild = nullptr;
+        obj = nullptr;
+
+        sentencesFieldOne->setProperty ( "proceed", false );
+        QVariantList temp;
+        temp.insert ( 0, "This one build itself on its own! :)" );
+        sentencesFieldOne->setProperty ( "feed", temp );
+        sentencesFieldOne->setProperty ( "loop", true );
+        sentencesFieldOne->setProperty ( "proceed", true );
+        obj = sentencesFieldOne->findChild<QObject*> ( "sentencesFieldOneTimer" );
+        obj->setProperty ( "running", true );
+
+        obj = nullptr;
+
+        sentencesFieldTwo->setProperty ( "proceed", false );
+        temp.removeAt ( 0 );
+        temp.insert ( 0, "" );
+        sentencesFieldTwo->setProperty ( "feed", temp );
+        sentencesFieldTwo->setProperty ( "proceed", false );
+
+      }
+
 };
 
 
 void GameLogic::newGame ( void )
 {
 
-  canvas = view->findChild<QObject*> ( "gameCanvas" );
+  if (!canvas)
+  {
+    canvas = view->findChild<QObject*> ( "gameCanvas" );
+
+    if (!canvas)
+      return;
+  }
+
   canvas->setProperty ( "health", health );
 
   fragments = new (std::nothrow) QQuickItem * [count];
@@ -217,6 +381,7 @@ void GameLogic::newGame ( void )
       fragments [i] = nullptr;
       createItem ( i );
       states [i].id = i;
+      states [i].dirty = false;
       states [i].onBusiness = true;
     }
     gaming = true;
@@ -296,6 +461,7 @@ void GameLogic::tick ( void )
         delete fragments [i];
         fragments [i] = nullptr;
         createItem ( i );
+        states [i].dirty = false;
         states [i].onBusiness = true;
 
       }
@@ -309,13 +475,49 @@ void GameLogic::tick ( void )
 void GameLogic::update ( QString objName, int x, int y )
 {
 
-  // game's universe actions/input preparations
+  // game's universe actions/inputs preparations
 
+  // Todo: different movements (practically choosing the sentence smarter)
+  // Todo: pointing system can be added
+
+  // keep track of player
   player.x = x;
   player.y = y;
 
-  // Todo: different movement and pointing system can be added
-  moved = true;
+  // movements sentences
+  if (gaming)
+  {
+
+    moves++;
+    if (moves == 100)
+    {
+      moves = 0;
+      if (!canvas)
+      {
+        canvas = view->findChild<QObject*> ( "gameCanvas" );
+
+        if (!canvas)
+          return;
+      }
+
+      if (!sentencesFieldTwo)
+      {
+        sentencesFieldTwo = view->findChild<QQuickItem*> ( "sentencesFieldTwo" );
+
+        if (!sentencesFieldTwo)
+          return;
+      }
+
+      sentencesFieldTwo->setProperty ( "proceed", false );
+
+      QVariantList temp;
+      temp.insert ( 0, tale->getMovementSentence () );
+
+      sentencesFieldTwo->setProperty ( "feed", temp );
+      sentencesFieldTwo->setProperty ( "proceed", true );
+    }
+
+  }
 
 };
 
@@ -331,13 +533,17 @@ void GameLogic::endGame ( void )
   //delete [] * fragments;
   //fragments = nullptr;
 
-  for (unsigned short i = 0; i < count; i++)
+  if (fragments)
   {
-    if (fragments [i])
+    for (unsigned short i = 0; i < count; i++)
     {
-      delete fragments [i];
-      fragments [i] = nullptr;
+      if (fragments [i])
+      {
+        delete fragments [i];
+        fragments [i] = nullptr;
+      }
     }
+    fragments = nullptr;
   }
 
 }

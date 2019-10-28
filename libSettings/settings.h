@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,22.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 #ifndef SETTINGS_H
@@ -44,6 +44,7 @@ private:
 
   bool loaded; // true if loading was successful
   bool saved; // true if write procedure succeeded
+
   bool load ( void ); // settings file loader
 public:
   Settings current; // current/all settings container

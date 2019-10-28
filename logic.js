@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,19.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 var screenWidth = configs.getWidth()
@@ -11,6 +11,69 @@ var screenHeight = configs.getHeight()
 var healthJS = 20;
 var items = new Array(20);
 var component = Qt.createComponent("./qml/Fragment.qml");
+
+
+// game's different states initializer
+function initializeGame(response)
+{
+  if (response === "NotInitialized")
+  {
+
+    quitter = false
+
+    welcomeText.visible = true
+    welcomeTextTimer.start()
+    smily.scale = 0.5
+
+    sentencesFieldOneTimer.stop()
+
+    sentencesFieldOne.proceed = false
+    sentencesFieldOne.feed = [tale.getTitle()]
+    sentencesFieldOne.proceed = true
+
+  } else
+
+    if (response === "Welcomed" && !quitter)
+    {
+
+      gameExitButton.visible = false
+      taleArea.height = 500
+
+      sentencesFieldOne.proceed = false
+      sentencesFieldOne.feed = tale.getTaleSentences()
+      sentencesFieldOne.loop = false
+      sentencesFieldOne.proceed = true
+
+      newGameTimer.start()
+
+    } else
+
+      if (response === "Quitted")
+      {
+
+        // guide: Nerd Snow's saying: a quitter is never going to be the same size as of the past!
+        if(!quitter)
+          smily.scale = 1.0
+
+        welcomeText.visible = true
+
+        if(tickTimer.running)
+        {
+          tickTimer.stop()
+          //          LogicJs.endGame()
+          logic.endGame()
+        }
+
+        taleArea.height = 100
+        gameExitButton.visible = true
+        sentencesFieldOne.proceed = false
+        sentencesFieldOne.feed = ["This one build itself on its own! :)"]
+        sentencesFieldOne.loop = true
+        sentencesFieldOne.proceed = true
+        sentencesFieldOneTimer.start()
+
+      }
+}
 
 
 function newGame()

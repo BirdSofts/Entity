@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,24.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -32,22 +32,25 @@ Item {
     radius: 3
     scale: 1
     color: {
-      if (type === 1)
+      switch(type)
+      {
+      case 1:
         return "red"
-      else if (type === 2)
+      case 2:
         return "white"
-      else if (type === 3)
+      case 3:
         return "brown"
-      else if (type === 4)
+      case 4:
         return "black"
-      else if (type === 5)
+      case 5:
         return "green"
-      else if (type === 6)
+      case 6:
         return "purple"
-      else if (type === 7)
+      case 7:
         return "blue"
-      else if (type === 8)
+      case 8:
         return "yellow"
+      }
     }
 
     // collision animations (animations on fragments shadow and scale)

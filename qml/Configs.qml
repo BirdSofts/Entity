@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,22.10.2019</changed>
+/// <changed>ʆϒʅ,28.10.2019</changed>
 // *******************************************************************************************
 
 import QtQuick 2.13
@@ -232,13 +232,13 @@ Item {
               PathQuad {
                 x: 200
                 y: 50
-                controlX: pathBase.width + ( pathBase.width / 2)
+                controlX: pathBase.width + ( pathBase.width / 3)
                 controlY: 50
               }
               PathQuad {
                 x: pathBase.width / 2
                 y: 150
-                controlX: -150
+                controlX: -50
                 controlY: 50
               }
             }
@@ -293,7 +293,9 @@ Item {
         }
       }
 
+
     }
+
 
     // page's list view control
     ListView {
@@ -307,5 +309,18 @@ Item {
       //        flickDeceleration: 2000
       //        cacheBuffer: 200
     }
+  }
+
+
+  // copyright statement
+  Label {
+    id: copyright
+    background: ThemeItem { opacity: 0.0 }
+    text: qsTr("©: ʆϒʅ")
+    font.pointSize: 13
+    font.family: fontName
+    padding: 5
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
   }
 }
