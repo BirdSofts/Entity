@@ -1,9 +1,9 @@
 ﻿# *******************************************************************************************
 #/ <summary>
-#/ 
+#/
 #/ </summary>
 #/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,24.10.2019</changed>
+#/ <changed>ʆϒʅ,12.11.2021</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -17,7 +17,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(TARGET_NAME entity)
+set(TARGET_NAME Entity)
 
 set(PROJECT_NAME ${TARGET_NAME})
 
