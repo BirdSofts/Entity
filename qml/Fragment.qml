@@ -3,11 +3,11 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
-import QtQuick 2.13
-import QtGraphicalEffects 1.0
+import QtQuick 2.15
+//import QtGraphicalEffects 1.15
 
 
 // a game item container
@@ -55,13 +55,20 @@ Item {
 
     // collision animations (animations on fragments shadow and scale)
     layer.enabled: true
-    layer.effect: DropShadow {
-      id: collision
-      verticalOffset: 0
-      color: "darkorange"
-      samples: 0
-      spread: 0.7
-      PropertyAnimation on samples {
+    layer.effect: ColorAnimation {
+        id: collision
+        from: "white"
+        to: "black"
+        duration: 100
+      }
+    //      DropShadow {
+    //        id: collision
+    //        verticalOffset: 0
+    //        color: "darkorange"
+    //        samples: 0
+    //        spread: 0.7
+    //      }
+      PropertyAnimation on color {
         id: collisionAnimation
         from: 0
         to: 90
@@ -78,7 +85,6 @@ Item {
       running: false
       onStopped: { content.visible = false; content.layer.enabled = false }
     }
-  }
 
   // Todo: persuasive ones
 }

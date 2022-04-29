@@ -3,10 +3,10 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,23.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
-import QtQuick 2.13
+import QtQuick 2.15
 
 
 // colour model container

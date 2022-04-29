@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -150,7 +150,7 @@ void GameLogic::createItem ( unsigned short index )
     }
 
   }
-  catch (const std::exception & ex)
+  catch (const std::exception& ex)
   {
   }
 }
@@ -255,6 +255,12 @@ void GameLogic::initializeGame ( QString response )
         return;
     }
 
+    if (configs->setGetDebug ())
+    {
+      sentencesFieldOne->setProperty ( "time", 130 );
+      sentencesFieldTwo->setProperty ( "time", 130 );
+    }
+
     canvas->setProperty ( "quitter", false );
 
     obj = canvas->findChild<QObject*> ( "welcomeText" );
@@ -309,7 +315,12 @@ void GameLogic::initializeGame ( QString response )
 
         // guide: Nerd Snow's saying: a quitter is never going to be the same size as of the past!
         if (!canvas->property ( "quitter" ).toBool ())
+        {
           playerObj->setProperty ( "scale", 1.0 );
+        }
+
+        obj = canvas->findChild<QObject*> ( "gameExitButton" );
+        obj->setProperty ( "visible", true );
 
         obj = canvas->findChild<QObject*> ( "welcomeText" );
         obj->setProperty ( "visible", true );

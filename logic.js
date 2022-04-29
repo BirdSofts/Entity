@@ -3,11 +3,12 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,12.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
 var screenWidth = configs.getWidth()
 var screenHeight = configs.getHeight()
+var debug = configs.setGetDebug()
 var healthJS = 20;
 var items = new Array(20);
 var component = Qt.createComponent("./qml/Fragment.qml");
@@ -18,6 +19,12 @@ function initializeGame(response)
 {
   if (response === "NotInitialized")
   {
+
+    if (debug)
+    {
+        sentencesFieldOne.time = 130
+        sentencesFieldTwo.time = 130
+    }
 
     quitter = false
 
@@ -55,13 +62,15 @@ function initializeGame(response)
         if(!quitter)
           smily.scale = 1.0
 
+        gameExitButton.visible = true
+
         welcomeText.visible = true
 
         if(tickTimer.running)
         {
           tickTimer.stop()
-          //          LogicJs.endGame()
-          logic.endGame()
+          LogicJs.endGame()
+//          logic.endGame()
         }
 
         taleArea.height = 100

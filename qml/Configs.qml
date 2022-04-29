@@ -1,16 +1,16 @@
-﻿// *******************************************************************************************
+﻿    // *******************************************************************************************
 /// <summary>
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
-import QtQuick 2.13
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.6
-import QtQml.Models 2.3
-import QtQuick.Dialogs 1.3
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+import QtQml.Models 2.15
+//import QtQuick.Dialogs 1.3
 
 
 // page base container

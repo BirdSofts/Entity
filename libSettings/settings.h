@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
 #ifndef SETTINGS_H
@@ -45,6 +45,8 @@ private:
   bool loaded; // true if loading was successful
   bool saved; // true if write procedure succeeded
 
+  bool debug;
+
   bool load ( void ); // settings file loader
 public:
   Settings current; // current/all settings container
@@ -52,6 +54,8 @@ public:
   Configuration ( QQuickView* );
   //~Configuration ( void );
   Q_INVOKABLE void setDefaults ( void ); // defaults (if the settings file is corrupt)
+  Q_INVOKABLE void setGetDebug ( bool ); // set debug
+  Q_INVOKABLE bool setGetDebug ( void ); // get debug
   Q_INVOKABLE void set ( int, QString, QString ); // QmlApp's configurations saver
   Q_INVOKABLE bool const getLoaded ( void ); // get loaded status
   Q_INVOKABLE unsigned short const getWidth ( void ); // get screen width

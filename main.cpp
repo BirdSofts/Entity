@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
 #include <qguiapplication.h>
@@ -16,10 +16,12 @@
 #include "./libSettings/settings.h"
 #include "./libTale/tale.h"
 
+bool debugVariable { true };
+
 
 int main ( int argc, char* argv [] )
 {
-  QCoreApplication::setAttribute ( Qt::AA_EnableHighDpiScaling );
+  //  QCoreApplication::setAttribute ( Qt::AA_EnableHighDpiScaling );
 
   QGuiApplication app ( argc, argv );
 
@@ -51,6 +53,8 @@ int main ( int argc, char* argv [] )
 
   Configuration configs ( &view );
   view.rootContext ()->setContextProperty ( "configs", &configs );
+
+  configs.setGetDebug ( debugVariable );
 
   Tale tale;
   view.rootContext ()->setContextProperty ( "tale", &tale );

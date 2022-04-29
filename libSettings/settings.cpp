@@ -3,7 +3,7 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,22.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
 #include "../libSettings/settings.h"
@@ -21,6 +21,8 @@ Configuration::Configuration ( QQuickView* viewObj ) :
 
   path = "./settings.xml";
   loaded = load ();
+
+  debug = false;
 
 };
 
@@ -65,17 +67,17 @@ bool Configuration::load ( void )
           else
             if (strSphere == "<font_name>")
               sphere = enumFontName;
+            else
+              if (strSphere == "<colour>")
+                sphere = enumColour;
               else
-                if (strSphere == "<colour>")
-                  sphere = enumColour;
-                else
-                {
-                  stream.str ( "" );
-                  stream.clear ();
-                  sphere = -1;
-                  std::getline ( file, input );
-                  stream << input << std::endl;
-                }
+              {
+                stream.str ( "" );
+                stream.clear ();
+                sphere = -1;
+                std::getline ( file, input );
+                stream << input << std::endl;
+              }
 
           strSphere = "";
 
@@ -113,7 +115,7 @@ bool Configuration::load ( void )
     }
 
   }
-  catch (const std::exception & ex)
+  catch (const std::exception& ex)
   {
     setDefaults ();
     return false;
@@ -126,6 +128,18 @@ void Configuration::setDefaults ( void )
   current.fontSize = 12;
   current.fontName = "Arial";
   current.colour = "blue";
+};
+
+
+void Configuration::setGetDebug ( bool value )
+{
+  debug = value;
+};
+
+
+bool Configuration::setGetDebug ( void )
+{
+  return debug;
 };
 
 
@@ -168,7 +182,7 @@ void Configuration::set ( int fontSize, QString fontName, QString colour )
       saved = false;
 
   }
-  catch (const std::exception & ex)
+  catch (const std::exception& ex)
   {
     saved = false;
   }

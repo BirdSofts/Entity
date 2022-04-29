@@ -3,7 +3,7 @@
 #/
 #/ </summary>
 #/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,12.11.2021</changed>
+#/ <changed>ʆϒʅ,29.04.2022</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -37,7 +37,7 @@ endif(MSVC)
 
 enable_testing()
 
-find_package(Qt5 COMPONENTS
+find_package(Qt6 COMPONENTS
   Core
   Gui
   Qml
@@ -67,6 +67,10 @@ list(APPEND SOURCE_FILES
   main.cpp
   )
 
+list(APPEND UI_FILES
+  libSettings/settings.xml
+  )
+
 list(APPEND QRC_FILES
   ${TARGET_NAME}.qrc
   )
@@ -74,6 +78,7 @@ list(APPEND QRC_FILES
 if(WIN32)
   list(APPEND SOURCE_FILES ${HEADER_FILES})
   list(APPEND SOURCE_FILES ${QRC_FILES})
+  list(APPEND SOURCE_FILES ${UI_FILES})
 endif(WIN32)
 
 if(ANDROID)
@@ -87,11 +92,11 @@ endif(ANDROID)
 #target_compile_definitions(${TARGET_NAME}
 #  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(${TARGET_NAME}
-  PUBLIC Qt5::Core
-  PUBLIC Qt5::Gui
-  PUBLIC Qt5::Qml
-  PUBLIC Qt5::Quick
-  PUBLIC Qt5::QuickControls2
+  PUBLIC Qt6::Core
+  PUBLIC Qt6::Gui
+  PUBLIC Qt6::Qml
+  PUBLIC Qt6::Quick
+  PUBLIC Qt6::QuickControls2
   PUBLIC libLogic
   PUBLIC libSettings
   PUBLIC libTale
@@ -108,17 +113,23 @@ target_link_libraries(${TARGET_NAME}
 #    endif()
 #endif()
 
-add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-  COMMAND cmake -E copy_if_different
-  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
-  $<TARGET_FILE_DIR:${TARGET_NAME}>
-  )
+#add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
+#  COMMAND cmake -E copy_if_different
+#  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
+#  $<TARGET_FILE_DIR:${TARGET_NAME}>
+#  )
 
-add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-  COMMAND cmake -E copy_if_different
-  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
-  $<TARGET_FILE_DIR:${TARGET_NAME}>/gtests
-  )
+#add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
+#  COMMAND cmake -E copy_if_different
+#  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
+#  $<TARGET_FILE_DIR:${TARGET_NAME}>/gtests
+#  )
+
+install(FILES libSettings/settings.xml
+DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+install(FILES libSettings/settings.xml
+DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gtests)
 
 if(RELEASE_FLAG)
   if(MINGW)
@@ -127,24 +138,24 @@ if(RELEASE_FLAG)
       ${QT_BINARIES}/libgcc_s_seh-1.dll
       ${QT_BINARIES}/libstdc++-6.dll
       ${QT_BINARIES}/libwinpthread-1.dll
-      ${QT_BINARIES}/Qt5Core.dll
-      ${QT_BINARIES}/Qt5Cored.dll
-      ${QT_BINARIES}/Qt5Gui.dll
-      ${QT_BINARIES}/Qt5Guid.dll
-      ${QT_BINARIES}/Qt5Network.dll
-      ${QT_BINARIES}/Qt5Networkd.dll
-      ${QT_BINARIES}/Qt5Qml.dll
-      ${QT_BINARIES}/Qt5Qmld.dll
-      ${QT_BINARIES}/Qt5Quick.dll
-      ${QT_BINARIES}/Qt5Quickd.dll
-      ${QT_BINARIES}/Qt5QuickControls2.dll
-      ${QT_BINARIES}/Qt5QuickControls2d.dll
-      ${QT_BINARIES}/Qt5QuickTemplates2.dll
-      ${QT_BINARIES}/Qt5QuickTemplates2d.dll
-      ${QT_BINARIES}/Qt5QuickWidgets.dll
-      ${QT_BINARIES}/Qt5QuickWidgetsd.dll
-      ${QT_BINARIES}/Qt5Widgets.dll
-      ${QT_BINARIES}/Qt5Widgetsd.dll
+      ${QT_BINARIES}/Qt6Core.dll
+      ${QT_BINARIES}/Qt6Cored.dll
+      ${QT_BINARIES}/Qt6Gui.dll
+      ${QT_BINARIES}/Qt6Guid.dll
+      ${QT_BINARIES}/Qt6Network.dll
+      ${QT_BINARIES}/Qt6Networkd.dll
+      ${QT_BINARIES}/Qt6Qml.dll
+      ${QT_BINARIES}/Qt6Qmld.dll
+      ${QT_BINARIES}/Qt6Quick.dll
+      ${QT_BINARIES}/Qt6Quickd.dll
+      ${QT_BINARIES}/Qt6QuickControls2.dll
+      ${QT_BINARIES}/Qt6QuickControls2d.dll
+      ${QT_BINARIES}/Qt6QuickTemplates2.dll
+      ${QT_BINARIES}/Qt6QuickTemplates2d.dll
+      ${QT_BINARIES}/Qt6QuickWidgets.dll
+      ${QT_BINARIES}/Qt6QuickWidgetsd.dll
+      ${QT_BINARIES}/Qt6Widgets.dll
+      ${QT_BINARIES}/Qt6Widgetsd.dll
       $<TARGET_FILE_DIR:${TARGET_NAME}>
       )
   endif(MINGW)

@@ -3,12 +3,12 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,05.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
-import QtQuick 2.13
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 
 // page base container
@@ -32,7 +32,7 @@ Item {
     anchors.verticalCenterOffset: -50
     font.family: fontName
     font.pixelSize: fontSize
-    background: ThemeButton {}
+    background: Button {}
     contentItem: Text { // adjustments to button text
       text: parent.text
       font: parent.font

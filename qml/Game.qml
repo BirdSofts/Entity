@@ -3,13 +3,13 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
-import QtQuick 2.13
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.5
-import QtGraphicalEffects 1.0
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+//import QtGraphicalEffects 1.15
 import "../logic.js" as LogicJs
 
 
@@ -140,7 +140,7 @@ Item {
           welcomeText.scale = 1
           welcomeText.text = "Welcome to the world of entity! :|"
 
-          //          LogicJs.initializeGame("Welcomed")
+//          LogicJs.initializeGame("Welcomed")
           logic.initializeGame("Welcomed")
 
         }
@@ -158,12 +158,12 @@ Item {
       onTriggered: {
         if(!tickTimer.running && current === count && !quitter)
         {
-          //                LogicJs.newGame()
+//          LogicJs.newGame()
           logic.newGame()
           tickTimer.start()
 
-          taleArea.height = 100
-          gameExitButton.visible = true
+          taleArea.height = 70
+          gameExitButton.visible = false
           sentencesFieldOne.proceed = false
           sentencesFieldOne.feed = [""]
           sentencesFieldOne.loop = true
@@ -177,7 +177,7 @@ Item {
       interval: 1
       running: false
       repeat: true
-      //        onTriggered: LogicJs.tick()
+//      onTriggered: LogicJs.tick()
       onTriggered: logic.tick()
     }
 
@@ -240,12 +240,12 @@ Item {
         drag.maximumX: draggableArea.width - 100
         drag.maximumY: draggableArea.height - 140
         //        onDoubleClicked: logic.initializeGame("NotInitialized") // for debug purposes
-        //                onPressed: LogicJs.initializeGame("NotInitialized")
+//        onPressed: LogicJs.initializeGame("NotInitialized")
         onPressed: logic.initializeGame("NotInitialized")
         onReleased: {
           if(!logic.isGaming())
             quitter = true
-          //          LogicJs.initializeGame("Quitted")
+//          LogicJs.initializeGame("Quitted")
           logic.initializeGame("Quitted")
         }
       }

@@ -3,12 +3,12 @@
 ///
 /// </summary>
 /// <created>ʆϒʅ,26.10.2019</created>
-/// <changed>ʆϒʅ,27.10.2019</changed>
+/// <changed>ʆϒʅ,29.04.2022</changed>
 // *******************************************************************************************
 
-import QtQuick 2.13
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 
 // RockAndRoll container
@@ -22,7 +22,8 @@ Item {
 
   // modifiable
   property var feed: ["", ""]
-  property var scaleEnabled: false
+  property int time: 1300
+  property bool scaleEnabled: false
   property bool proceed: false
   property bool loop: false
 
@@ -76,7 +77,7 @@ Item {
 
     Timer {
       id: rockAndRollTimer
-      interval: 1300
+      interval: time
       running: proceed
       repeat: true
       onTriggered: {

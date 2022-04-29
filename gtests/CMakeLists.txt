@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,04.10.2019</created>
-#/ <changed>ʆϒʅ,23.10.2019</changed>
+#/ <changed>ʆϒʅ,29.04.2022</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -35,11 +35,11 @@ add_executable(${TARGET_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${TARGET_NAME}
   PUBLIC GTest::gtest GTest::gtest_main
-  PUBLIC Qt5::Core
-  PUBLIC Qt5::Gui
-  PUBLIC Qt5::Qml
-  PUBLIC Qt5::Quick
-  PUBLIC Qt5::QuickControls2
+  PUBLIC Qt6::Core
+  PUBLIC Qt6::Gui
+  PUBLIC Qt6::Qml
+  PUBLIC Qt6::Quick
+  PUBLIC Qt6::QuickControls2
   PUBLIC libLogic
   PUBLIC libSettings
   PUBLIC libTale
