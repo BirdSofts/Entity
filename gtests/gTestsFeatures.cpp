@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <changed>ʆϒʅ,07.05.2022</changed>
 // *******************************************************************************************
 
 #include <gtest/gtest.h>
@@ -29,7 +29,7 @@ TEST ( Entity, Application_RunInWhole )
   QGuiApplication app ( argc, argv );
 
   app.setOrganizationName ( "BirdSofts" );
-  app.setOrganizationDomain ( "https://github.com/BirdSofts/" );
+  app.setOrganizationDomain ( "https://github.com/s-mehrdad/" );
   app.setApplicationName ( QFileInfo ( app.applicationFilePath () ).baseName () );
 
   QQuickView view;

@@ -3,7 +3,7 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,29.04.2022</changed>
+/// <changed>ʆϒʅ,07.05.2022</changed>
 // *******************************************************************************************
 
 #include <qguiapplication.h>
@@ -26,7 +26,7 @@ int main ( int argc, char* argv [] )
   QGuiApplication app ( argc, argv );
 
   app.setOrganizationName ( "BirdSofts" );
-  app.setOrganizationDomain ( "https://github.com/BirdSofts/" );
+  app.setOrganizationDomain ( "https://github.com/s-mehrdad/" );
   app.setApplicationName ( QFileInfo ( app.applicationFilePath () ).baseName () );
 
   QQuickView view;
