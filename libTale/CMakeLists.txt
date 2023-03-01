@@ -1,9 +1,12 @@
-﻿# *******************************************************************************************
+﻿
+# *******************************************************************************************
 #/ <summary>
-#/ 
+#/ CMekaLists.txt
+#/ Entity - libTale
+#/ created by Mehrdad Solimanimajd on 21.10.2019
 #/ </summary>
-#/ <created>ʆϒʅ,21.10.2019</created>
-#/ <changed>ʆϒʅ,07.05.2022</changed>
+#/ <created>ʆϒʅ, 21.10.2019</created>
+#/ <changed>ʆϒʅ, 01.03.2023</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -17,21 +20,21 @@ project(${PROJECT_NAME}
   DESCRIPTION "Entity tale library"
   HOMEPAGE_URL "https://github.com/s-mehrdad/Entity"
   LANGUAGES CXX
-  )
+)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INCLUDE_CURRENT_SOURCE_DIR ON)
 
 list(APPEND HEADER_FILES
   tale.h
-  )
+)
 
 list(APPEND SOURCE_FILES
   tale.cpp
-  )
+)
 
-if(WIN32)
-  list(APPEND SOURCE_FILES ${HEADER_FILES})
-endif(WIN32)
+#if(WIN32)
+list(APPEND SOURCE_FILES ${HEADER_FILES})
+#endif(WIN32)
 
 add_library(${TARGET_NAME} ${SOURCE_FILES})
 
@@ -40,4 +43,4 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC Qt6::Gui
   PUBLIC Qt6::Qml
   PUBLIC Qt6::Quick
-  )
+)

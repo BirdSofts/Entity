@@ -1,9 +1,12 @@
-﻿# *******************************************************************************************
+﻿
+# *******************************************************************************************
 #/ <summary>
-#/ 
+#/ CMakeLists.txt
+#/ Entity - gtest
+#/ created by Mehrdad Solimanimajd on 04.10.2019
 #/ </summary>
-#/ <created>ʆϒʅ,04.10.2019</created>
-#/ <changed>ʆϒʅ,07.05.2022</changed>
+#/ <created>ʆϒʅ, 04.10.2019</created>
+#/ <changed>ʆϒʅ, 01.03.2023</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
@@ -17,19 +20,19 @@ project(${PROJECT_NAME}
   DESCRIPTION "Google Tests of Entity Game."
   HOMEPAGE_URL "https://github.com/s-mehrdad/Entity"
   LANGUAGES CXX
-  )
+)
 
 list(APPEND HEADER_FILES
-#  gTestsClass.h
-  )
+  #  gTestsClass.h
+)
 list(APPEND SOURCE_FILES
-#  main.cpp
-#  gTestsClass.cpp
+  #  main.cpp
+  #  gTestsClass.cpp
   gTestsFeatures.cpp
-  )
-if(WIN32)
-  list(APPEND SOURCE_FILES ${HEADER_FILES})
-endif(WIN32)
+)
+#if(WIN32)
+list(APPEND SOURCE_FILES ${HEADER_FILES})
+#endif(WIN32)
 
 add_executable(${TARGET_NAME} ${SOURCE_FILES})
 
@@ -43,6 +46,6 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC libLogic
   PUBLIC libSettings
   PUBLIC libTale
-  )
+)
 
 gtest_discover_tests(${TARGET_NAME} NO_PRETTY_TYPES NO_PRETTY_VALUES)

@@ -1,9 +1,12 @@
-﻿// *******************************************************************************************
+﻿
+// *******************************************************************************************
 /// <summary>
-///
+/// ColourModel.qml
+/// Entity
+/// created by Mehrdad Solimanimajd on 03.10.2019
 /// </summary>
-/// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,29.04.2022</changed>
+/// <created>ʆϒʅ, 03.10.2019</created>
+/// <changed>ʆϒʅ, 27.02.2023</changed>
 // *******************************************************************************************
 
 import QtQuick 2.15
@@ -12,31 +15,31 @@ import QtQuick 2.15
 // colour model container
 ListModel {
   ListElement {
-    name: "darkcyan"
-    colour: "darkcyan"
+    name: "aliceblue"
+    colour: "#f0f8ff"
   }
   ListElement {
-    name: "darkred"
-    colour: "darkred"
+    name: "bisque"
+    colour: "#ffe4c4"
   }
   ListElement {
-    name: "darkgray"
-    colour: "darkgray"
+    name: "cadetblue"
+    colour: "#5f9ea0"
   }
   ListElement {
-    name: "darkorchid"
-    colour: "darkorchid"
+    name: "cornflowerblue"
+    colour: "#6495ed"
   }
   ListElement {
-    name: "darkgreen"
-    colour: "darkgreen"
+    name: "gainsboro"
+    colour: "#dcdcdc"
   }
   ListElement {
-    name: "darkslategrey"
-    colour: "darkslategrey"
+    name: "lavender"
+    colour: "#e6e6fa"
   }
   ListElement {
-    name: "darkslateblue"
-    colour: "darkslateblue"
+    name: "lightblue"
+    colour: "#add8e6"
   }
 }

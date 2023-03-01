@@ -1,9 +1,12 @@
-﻿// *******************************************************************************************
+﻿
+// *******************************************************************************************
 /// <summary>
-///
+/// settings.cpp
+/// Entity - libSettings
+/// created by Mehrdad Solimanimajd on 03.10.2019
 /// </summary>
-/// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,29.04.2022</changed>
+/// <created>ʆϒʅ, 03.10.2019</created>
+/// <changed>ʆϒʅ, 01.03.2023</changed>
 // *******************************************************************************************
 
 #include "../libSettings/settings.h"
@@ -13,8 +16,8 @@ Configuration::Configuration ( QQuickView* viewObj ) :
   view ( viewObj ), property ( nullptr ), loaded ( false ), saved ( false )
 {
 
-  current.width = 600;
-  current.height = 800;
+  current.width = 480;
+  current.height = 640;
   current.fontSize = 0;
   current.fontName = "";
   current.colour = "";

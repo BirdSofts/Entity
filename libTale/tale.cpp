@@ -1,9 +1,12 @@
-﻿// *******************************************************************************************
+﻿
+// *******************************************************************************************
 /// <summary>
-///
+/// tale.cpp
+/// Entity - libTale
+/// created by Mehrdad Solimanimajd on 21.10.2019
 /// </summary>
-/// <created>ʆϒʅ,21.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <created>ʆϒʅ, 21.10.2019</created>
+/// <changed>ʆϒʅ, 01.03.2023</changed>
 // *******************************************************************************************
 
 #include <ctime>
@@ -36,10 +39,10 @@ Tale::Tale ()
   taleSentences.insert ( 8, "How curious will be your received packages!" );
   taleSentences.insert ( 9, "Will you be able to solve and survive?!" );
   taleSentences.insert ( 10, "In a survival environment," );
-  taleSentences.insert ( 11, "where expectations are secure-zipped," );
+  taleSentences.insert ( 11, "where expectations are secure-zipped (:|)," );
   taleSentences.insert ( 12, "the wish for guidance my be with you!" );
   taleSentences.insert ( 13, "The player before you got blessed by God and is still alive!" );
-  taleSentences.insert ( 14, "To quote the famous Mr. Spock: \"Live long an prosper!\"" );
+  taleSentences.insert ( 14, "To quote the famous Mr. Spock: \"Live long and prosper!\"" );
 
   movementSentences [0] = "I see what you are getting at...";
   movementSentences [1] = "Respect, respect!";
@@ -52,7 +55,7 @@ Tale::Tale ()
   movementSentences [8] = "I say start a petition, so they add jumps!";
   movementSentences [9] = "That move could make such a scene on the Mars!";
 
-  collisionSentences [0][0] = "Oops, just the simplicity of collided package!"; // red
+  collisionSentences [0][0] = "Oops, just the simplicity of collided package!"; // red: developer himself!!! :|
   collisionSentences [0][1] = "I just thought what a colour!";
   collisionSentences [1][0] = "Plain it was, trust your eyes!"; // white
   collisionSentences [1][1] = "It was a piece of cloud, wasn't?!";

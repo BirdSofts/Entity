@@ -1,14 +1,15 @@
-﻿# *******************************************************************************************
+﻿
+# *******************************************************************************************
 #/ <summary>
-#/
+#/ CMakeLists.txt
+#/ Entity
+#/ created by Mehrdad Solimanimajd on 03.10.2019
 #/ </summary>
-#/ <created>ʆϒʅ,03.10.2019</created>
-#/ <changed>ʆϒʅ,07.05.2022</changed>
+#/ <created>ʆϒʅ, 03.10.2019</created>
+#/ <changed>ʆϒʅ, 01.03.2023</changed>
 # *******************************************************************************************
 
 cmake_minimum_required(VERSION 3.5)
-
-set(RELEASE_FLAG OFF)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,6 +17,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+set(RELEASE_FLAG OFF)
 
 set(TARGET_NAME Entity)
 
@@ -26,7 +29,7 @@ project(${PROJECT_NAME}
   DESCRIPTION "Entity Game"
   HOMEPAGE_URL "https://github.com/s-mehrdad/Entity"
   LANGUAGES CXX
-  )
+)
 
 include(CTest)
 
@@ -45,9 +48,9 @@ find_package(Qt6 COMPONENTS
   QuickControls2
   REQUIRED)
 
-add_subdirectory(libLogic)
-add_subdirectory(libSettings)
 add_subdirectory(libTale)
+add_subdirectory(libSettings)
+add_subdirectory(libLogic)
 
 if(MSVC)
   add_subdirectory(gtests)
@@ -57,36 +60,45 @@ if(MSVC)
   list(APPEND RESOURCES
     ${TARGET_NAME}.rc
     resource.h
-    )
+  )
 endif(MSVC)
 
 list(APPEND HEADER_FILES
-  )
+)
 
 list(APPEND SOURCE_FILES
   main.cpp
-  )
-
-list(APPEND UI_FILES
-  libSettings/settings.xml
-  )
+)
 
 list(APPEND QRC_FILES
   ${TARGET_NAME}.qrc
-  )
+)
 
 if(WIN32)
   list(APPEND SOURCE_FILES ${HEADER_FILES})
-  list(APPEND SOURCE_FILES ${QRC_FILES})
-  list(APPEND SOURCE_FILES ${UI_FILES})
 endif(WIN32)
 
 if(ANDROID)
-  add_library(${TARGET_NAME} SHARED ${SOURCE_FILES} ${RESOURCES})
+  add_library(${TARGET_NAME} SHARED
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
+    ${QRC_FILES}
+    ${RESOURCES}
+  )
+
 elseif(WIN32)
-  add_executable(${TARGET_NAME} WIN32 ${SOURCE_FILES} ${RESOURCES})
+  add_executable(${TARGET_NAME} WIN32
+    ${SOURCE_FILES}
+    ${QRC_FILES}
+    ${RESOURCES}
+  )
+
 else(WIN32)
-  add_executable(${TARGET_NAME} ${SOURCE_FILES} ${RESOURCES})
+  add_executable(${TARGET_NAME}
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
+    ${QRC_FILES}
+    ${RESOURCES})
 endif(ANDROID)
 
 #target_compile_definitions(${TARGET_NAME}
@@ -97,10 +109,10 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC Qt6::Qml
   PUBLIC Qt6::Quick
   PUBLIC Qt6::QuickControls2
-  PUBLIC libLogic
-  PUBLIC libSettings
   PUBLIC libTale
-  )
+  PUBLIC libSettings
+  PUBLIC libLogic
+)
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
@@ -113,23 +125,23 @@ target_link_libraries(${TARGET_NAME}
 #    endif()
 #endif()
 
-#add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-#  COMMAND cmake -E copy_if_different
-#  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
-#  $<TARGET_FILE_DIR:${TARGET_NAME}>
-#  )
+add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
+  $<TARGET_FILE_DIR:${TARGET_NAME}>
+  VERBATIM)
 
-#add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-#  COMMAND cmake -E copy_if_different
-#  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
-#  $<TARGET_FILE_DIR:${TARGET_NAME}>/gtests
-#  )
-
-install(FILES libSettings/settings.xml
-DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  ${CMAKE_CURRENT_SOURCE_DIR}/libSettings/settings.xml
+  $<TARGET_FILE_DIR:${TARGET_NAME}>/gtests
+  VERBATIM)
 
 install(FILES libSettings/settings.xml
-DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gtests)
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+install(FILES libSettings/settings.xml
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gtests)
 
 if(RELEASE_FLAG)
   if(MINGW)
@@ -157,8 +169,8 @@ if(RELEASE_FLAG)
       ${QT_BINARIES}/Qt6Widgets.dll
       ${QT_BINARIES}/Qt6Widgetsd.dll
       $<TARGET_FILE_DIR:${TARGET_NAME}>
-      )
-  endif(MINGW)
+    )
+endif(MINGW)
 endif(RELEASE_FLAG)
 
 #if(GNUCXX)

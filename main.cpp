@@ -1,9 +1,12 @@
-﻿// *******************************************************************************************
+﻿
+// *******************************************************************************************
 /// <summary>
-/// 
+/// main.cpp
+/// Entity
+/// created by Mehrdad Solimanimajd on 03.10.2019
 /// </summary>
-/// <created>ʆϒʅ,03.10.2019</created>
-/// <changed>ʆϒʅ,07.05.2022</changed>
+/// <created>ʆϒʅ, 03.10.2019</created>
+/// <changed>ʆϒʅ, 27.02.2023</changed>
 // *******************************************************************************************
 
 #include <qguiapplication.h>
@@ -16,7 +19,7 @@
 #include "./libSettings/settings.h"
 #include "./libTale/tale.h"
 
-bool debugVariable { true };
+bool debugVariable { false };
 
 
 int main ( int argc, char* argv [] )

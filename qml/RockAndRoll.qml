@@ -1,9 +1,12 @@
-﻿// *******************************************************************************************
+﻿
+// *******************************************************************************************
 /// <summary>
-///
+/// RockAndRoll.qml
+/// Entity
+/// created by Mehrdad Solimanimajd on 26.10.2019
 /// </summary>
-/// <created>ʆϒʅ,26.10.2019</created>
-/// <changed>ʆϒʅ,29.04.2022</changed>
+/// <created>ʆϒʅ, 26.10.2019</created>
+/// <changed>ʆϒʅ, 27.02.2023</changed>
 // *******************************************************************************************
 
 import QtQuick 2.15
@@ -51,8 +54,8 @@ Item {
         //        text: "" + Layout.row
         //        text: "" + index
         text: "" + modelData
-        font.family: "Candara"
-        font.pixelSize: 20
+        font.family: fontName
+        font.pixelSize: fontSize
         color: "black"
         Layout.fillWidth: true
         Layout.maximumHeight: 26

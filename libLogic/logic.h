@@ -1,9 +1,12 @@
-﻿// *******************************************************************************************
+﻿
+// *******************************************************************************************
 /// <summary>
-/// 
+/// logic.h
+/// Entity - libLogic
+/// created by Mehrdad Solimanimajd on 04.10.2019
 /// </summary>
-/// <created>ʆϒʅ,04.10.2019</created>
-/// <changed>ʆϒʅ,28.10.2019</changed>
+/// <created>ʆϒʅ, 04.10.2019</created>
+/// <changed>ʆϒʅ, 01.03.2023</changed>
 // *******************************************************************************************
 
 #ifndef LOGIC_H
@@ -18,10 +21,10 @@
 #include <qquickview.h>
 #include <qstring.h>
 
-// need to be provided through a smart pointer but for the time being:
-#include "..\libSettings\settings.h"
-#include "..\libTale\tale.h"
+#include "../libSettings/settings.h"
+#include "../libTale/tale.h"
 
+// todo: provided through a smart pointer
 
 // entity's most needed properties container
 struct Smily
