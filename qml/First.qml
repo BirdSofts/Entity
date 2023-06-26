@@ -3,16 +3,14 @@
 /// <summary>
 /// First.qml
 /// Entity
-/// created by Mehrdad Solimanimajd on 05.10.2019
+/// created by Mehrdad Soleimanimajd on 05.10.2019
 /// </summary>
 /// <created>ʆϒʅ, 05.10.2019</created>
-/// <changed>ʆϒʅ, 27.02.2023</changed>
+/// <changed>ʆϒʅ, 25.06.2023</changed>
 // *******************************************************************************************
-
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-
 
 // page base container
 Item {
@@ -20,12 +18,13 @@ Item {
     width: configs.getWidth()
     height: configs.getHeight()
     anchors.margins: 5
-    ThemeItem { color: colour }
+    ThemeItem {
+        color: colour
+    }
 
     property int fontSize: 0
     property string fontName: ""
     property string colour: ""
-
 
     Button {
         id: gameStarter
@@ -52,7 +51,6 @@ Item {
         onClicked: gameStarted = true
     }
 
-
     Button {
         id: settingsShower
         background: ThemeButton {}
@@ -62,7 +60,8 @@ Item {
         anchors.verticalCenterOffset: 50
         font.family: fontName
         font.pixelSize: fontSize
-        contentItem: Label { // adjustments to button text
+        contentItem: Label {
+            // adjustments to button text
             text: parent.text
             font: parent.font
             //            opacity: enabled ? 1.0 : 0.3
@@ -75,7 +74,6 @@ Item {
         padding: 100
         onClicked: settingsShow = true
     }
-
 
     // tale area (narrator space)
     Rectangle {
@@ -141,11 +139,12 @@ Item {
         }
     }
 
-
     // copyright statement
     Label {
         id: copyright
-        background: ThemeItem { opacity: 0.0 }
+        background: ThemeItem {
+            opacity: 0.0
+        }
         text: qsTr("©: ʆϒʅ")
         font.pointSize: 13
         font.family: fontName

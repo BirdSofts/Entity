@@ -10,5 +10,6 @@
         <file>qml/RockAndRoll.qml</file>
         <file>qml/ThemeButton.qml</file>
         <file>qml/ThemeItem.qml</file>
+        <file>entity.rc</file>
     </qresource>
 </RCC>

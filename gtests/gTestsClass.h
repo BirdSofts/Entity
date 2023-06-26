@@ -3,10 +3,10 @@
 /// <summary>
 /// gTestCLass.h
 /// Entity - gtest
-/// created by Mehrdad Solimanimajd on 04.10.2019
+/// created by Mehrdad Soleimanimajd on 04.10.2019
 /// </summary>
 /// <created>ʆϒʅ, 04.10.2019</created>
-/// <changed>ʆϒʅ, 01.03.2023</changed>
+/// <changed>ʆϒʅ, 25.06.2023</changed>
 // *******************************************************************************************
 
 #ifndef GTESTSCLASS_H
