@@ -34,4 +34,4 @@ Compile using CMake.
 I appreciate any contribution from anyone, who sees that the project deserves his precious time.
 
 # Copyright
-This is not a freeware and the idea itself, source code and literature within is copyrighted. The Source code only can be used for teaching purposes complying to the Qt's open source licenses. For any other use the creator's written permission and acknowledgment is obligatory.
+Refer to license file provided within SOFTWARE itself. Additionally pay attention to open source software license agreement provided by Qt company.
